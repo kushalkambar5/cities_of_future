@@ -1,0 +1,20 @@
+# Python Virtual Environment
+.venv/
+venv/
+env/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Temporary and output directories
+processed_results/
+output/
+*.mp4
+*.avi
+*.csv
+
+# OS metadata
+.DS_Store
+Thumbs.db
