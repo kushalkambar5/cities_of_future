@@ -1,0 +1,17 @@
+{
+  "name": "openfreemap-mangalore-assets",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "maplibre-gl": "^6.15.0",
+    "next": "16.4.3",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "three": "^0.186.1"
+  }
+}
