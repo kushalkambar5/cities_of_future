@@ -66,6 +66,14 @@ class Settings(BaseSettings):
     # Device
     FORCE_CPU: bool = False
 
+    # Cloudflare R2 Storage Configuration
+    R2_BUCKET: str = ""
+    R2_PUBLIC_URL: str = ""
+    R2_ENDPOINT: str = ""
+    R2_ACCESS_KEY_ID: str = ""
+    R2_SECRET_ACCESS_KEY: str = ""
+    R2_TOKEN_VALUE: str = ""
+
     if SettingsConfigDict is not None:
         model_config = SettingsConfigDict(
             env_file=str(MODELS_DIR / ".env"),

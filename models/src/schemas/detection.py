@@ -83,14 +83,34 @@ class VehicleReportSummary(BaseModel):
     accident_status: str
     accident_confidence: float
     violations: List[str]
+    first_seen_ms: Optional[int] = None
+    last_seen_ms: Optional[int] = None
+    first_seen_timestamp: Optional[str] = None
+    last_seen_timestamp: Optional[str] = None
+
+
+class PipelineProcessR2Request(BaseModel):
+    r2_video_key: str = Field(..., description="Cloudflare R2 video file key ID")
+    camera_id: str = Field("CAM_01", description="Camera or sensor identifier")
+    simulation_id: Optional[int] = Field(None, description="Simulation ID if applicable")
+    speed_limit_kmh: float = Field(60.0, description="Speed limit in km/h")
+    expected_direction_deg: float = Field(90.0, description="Expected heading direction in degrees")
+    direction_tolerance_deg: float = Field(90.0, description="Direction angular tolerance in degrees")
+    output_r2_prefix: str = Field("processed", description="Folder/prefix for output video in Cloudflare R2")
 
 
 class PipelineProcessResult(BaseModel):
     success: bool = True
-    media_type: str  # "image" or "video"
+    media_type: str = "video"
     total_frames_processed: int
     duration_seconds: Optional[float] = None
+    output_video_r2_key: Optional[str] = None
+    output_video_url: Optional[str] = None
+    annotated_media_url: Optional[str] = None
     accident_overall: AccidentDetection
     vehicles: List[VehicleReportSummary]
     events: List[DetectionEventItem]
-    annotated_media_url: Optional[str] = None
+    detected_timestamps: Dict[str, List[float]] = Field(
+        default_factory=dict,
+        description="Timestamps in seconds for detected incidents and events",
+    )

@@ -20,5 +20,7 @@ class DetectionEventItem(BaseModel):
     plate_number: Optional[str] = Field(None, description="Recognized or synthetic plate")
     event_type: DetectionEventType = Field(..., description="Type of detection event")
     simulation_time_ms: int = Field(0, description="Timestamp in milliseconds from start")
+    timestamp_sec: Optional[float] = Field(None, description="Timestamp in seconds from start")
+    timestamp_formatted: Optional[str] = Field(None, description="Formatted timestamp mm:ss.ms")
     confidence: Optional[float] = Field(None, description="Model confidence score")
     data: Dict[str, Any] = Field(default_factory=dict, description="Event payload/details")

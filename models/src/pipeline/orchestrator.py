@@ -298,10 +298,15 @@ class MultiModelPipeline:
         latest_accident_probs: Dict[str, float] = {}
 
         events: List[DetectionEventItem] = []
+        vehicle_first_seen_ms: Dict[int, int] = {}
+        vehicle_last_seen_ms: Dict[int, int] = {}
+        detected_timestamps: Dict[str, List[float]] = defaultdict(list)
 
         for frame_idx, vehicles in enumerate(frames_vehicles):
             frame = video_frames[frame_idx]
-            sim_time_ms = int((frame_idx / fps) * 1000)
+            sim_time_sec = round(frame_idx / fps, 2)
+            sim_time_ms = int(sim_time_sec * 1000)
+            time_formatted = f"{int(sim_time_sec // 60):02d}:{sim_time_sec % 60:05.2f}"
 
             # Accident status
             acc_result = accident_preds[frame_idx]
@@ -310,10 +315,25 @@ class MultiModelPipeline:
             latest_accident_probs = acc_result[2]
 
             is_acc = latest_accident_status.lower() == "accident"
+            if is_acc:
+                detected_timestamps["accident"].append(sim_time_sec)
             accident_history.append(is_acc)
             accident_active = sum(accident_history) >= max(2, int(len(accident_history) * 0.6))
             if accident_active:
                 accident_overall_detected = True
+                if not any(e.event_type == DetectionEventType.ACCIDENT for e in events):
+                    events.append(DetectionEventItem(
+                        simulation_id=simulation_id,
+                        camera_id=camera_id,
+                        vehicle_track_id=None,
+                        plate_number=None,
+                        event_type=DetectionEventType.ACCIDENT,
+                        simulation_time_ms=sim_time_ms,
+                        timestamp_sec=sim_time_sec,
+                        timestamp_formatted=time_formatted,
+                        confidence=latest_accident_conf,
+                        data={"status": "ACCIDENT", "probabilities": latest_accident_probs},
+                    ))
 
             # Process Seatbelt detections for frame
             for box, kind, name, conf in seatbelt_preds[frame_idx]:
@@ -345,6 +365,10 @@ class MultiModelPipeline:
 
             # Process tracked vehicles in this frame
             for track_id, box in vehicles.items():
+                if track_id not in vehicle_first_seen_ms:
+                    vehicle_first_seen_ms[track_id] = sim_time_ms
+                vehicle_last_seen_ms[track_id] = sim_time_ms
+
                 if track_id not in plate_cache:
                     plate_cache[track_id] = self.plate_detector.get_plate_for_track(track_id)
                 plate_str, plate_conf, is_gen = plate_cache[track_id]
@@ -357,6 +381,7 @@ class MultiModelPipeline:
                 violations: List[str] = []
                 if current_speed > speed_limit_kmh:
                     violations.append("overspeed")
+                    detected_timestamps["overspeed"].append(sim_time_sec)
                     events.append(DetectionEventItem(
                         simulation_id=simulation_id,
                         camera_id=camera_id,
@@ -364,12 +389,15 @@ class MultiModelPipeline:
                         plate_number=plate_str,
                         event_type=DetectionEventType.SPEED,
                         simulation_time_ms=sim_time_ms,
+                        timestamp_sec=sim_time_sec,
+                        timestamp_formatted=time_formatted,
                         confidence=0.95,
                         data={"speed_kmh": current_speed, "speed_limit_kmh": speed_limit_kmh},
                     ))
 
                 if helmet[0] == "no_helmet":
                     violations.append("no_helmet")
+                    detected_timestamps["no_helmet"].append(sim_time_sec)
                     events.append(DetectionEventItem(
                         simulation_id=simulation_id,
                         camera_id=camera_id,
@@ -377,12 +405,15 @@ class MultiModelPipeline:
                         plate_number=plate_str,
                         event_type=DetectionEventType.HELMET,
                         simulation_time_ms=sim_time_ms,
+                        timestamp_sec=sim_time_sec,
+                        timestamp_formatted=time_formatted,
                         confidence=helmet[2],
                         data={"status": "NO_HELMET"},
                     ))
 
                 if seatbelt[0] == "no_belt":
                     violations.append("no_seatbelt")
+                    detected_timestamps["no_seatbelt"].append(sim_time_sec)
                     events.append(DetectionEventItem(
                         simulation_id=simulation_id,
                         camera_id=camera_id,
@@ -390,6 +421,8 @@ class MultiModelPipeline:
                         plate_number=plate_str,
                         event_type=DetectionEventType.SEATBELT,
                         simulation_time_ms=sim_time_ms,
+                        timestamp_sec=sim_time_sec,
+                        timestamp_formatted=time_formatted,
                         confidence=seatbelt[2],
                         data={"status": "NO_SEATBELT"},
                     ))
@@ -409,6 +442,7 @@ class MultiModelPipeline:
 
                     if is_wrong:
                         violations.append("wrong_side")
+                        detected_timestamps["wrong_side"].append(sim_time_sec)
                         events.append(DetectionEventItem(
                             simulation_id=simulation_id,
                             camera_id=camera_id,
@@ -416,6 +450,8 @@ class MultiModelPipeline:
                             plate_number=plate_str,
                             event_type=DetectionEventType.WRONG_SIDE,
                             simulation_time_ms=sim_time_ms,
+                            timestamp_sec=sim_time_sec,
+                            timestamp_formatted=time_formatted,
                             confidence=0.90,
                             data={"heading_deg": round(math.degrees(heading), 1)},
                         ))
@@ -482,6 +518,13 @@ class MultiModelPipeline:
 
             score = driving_score(danger_events[track_id], max_seen_speeds[track_id], speed_limit_kmh)
 
+            first_ms = vehicle_first_seen_ms.get(track_id, 0)
+            last_ms = vehicle_last_seen_ms.get(track_id, 0)
+            first_sec = round(first_ms / 1000.0, 2)
+            last_sec = round(last_ms / 1000.0, 2)
+            first_fmt = f"{int(first_sec // 60):02d}:{first_sec % 60:05.2f}"
+            last_fmt = f"{int(last_sec // 60):02d}:{last_sec % 60:05.2f}"
+
             final_vehicles.append(VehicleReportSummary(
                 track_id=track_id,
                 number_plate=plate_str,
@@ -494,7 +537,15 @@ class MultiModelPipeline:
                 accident_status="Accident" if accident_overall_detected else latest_accident_status,
                 accident_confidence=round(latest_accident_conf, 3),
                 violations=v_list,
+                first_seen_ms=first_ms,
+                last_seen_ms=last_ms,
+                first_seen_timestamp=first_fmt,
+                last_seen_timestamp=last_fmt,
             ))
+
+        cleaned_timestamps = {
+            k: sorted(list(set(v))) for k, v in detected_timestamps.items()
+        }
 
         return PipelineProcessResult(
             success=True,
@@ -509,5 +560,6 @@ class MultiModelPipeline:
             ),
             vehicles=final_vehicles,
             events=events,
+            detected_timestamps=cleaned_timestamps,
             annotated_media_url=output_path,
         )
