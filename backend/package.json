@@ -1,7 +1,27 @@
 {
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Smart Traffic & Violation Detection System Backend",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "db:generate": "drizzle-kit generate",
+    "db:push": "drizzle-kit push",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio"
+  },
   "dependencies": {
+    "dotenv": "^18.0.9",
     "drizzle-orm": "^0.45.4",
     "express": "^5.3.0",
-    "next-auth": "^4.24.15"
+    "next-auth": "^4.24.15",
+    "pg": "^8.23.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.6.5",
+    "@types/pg": "^8.23.1",
+    "drizzle-kit": "^0.31.11",
+    "typescript": "^7.0.2"
   }
 }
