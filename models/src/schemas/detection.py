@@ -90,7 +90,8 @@ class VehicleReportSummary(BaseModel):
 
 
 class PipelineProcessR2Request(BaseModel):
-    r2_video_key: str = Field(..., description="Cloudflare R2 video file key ID")
+    r2_video_key: Optional[str] = Field(None, description="Cloudflare R2 video file key ID")
+    file_path: Optional[str] = Field(None, description="Direct local filesystem video path")
     camera_id: str = Field("CAM_01", description="Camera or sensor identifier")
     simulation_id: Optional[int] = Field(None, description="Simulation ID if applicable")
     speed_limit_kmh: float = Field(60.0, description="Speed limit in km/h")

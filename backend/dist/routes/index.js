@@ -7,10 +7,18 @@ const express_1 = require("express");
 const auth_routes_js_1 = __importDefault(require("./auth.routes.js"));
 const traffic_light_routes_js_1 = __importDefault(require("./traffic-light.routes.js"));
 const camera_routes_js_1 = __importDefault(require("./camera.routes.js"));
+const simulation_routes_js_1 = __importDefault(require("./simulation.routes.js"));
+const violation_routes_js_1 = __importDefault(require("./violation.routes.js"));
+const chat_routes_js_1 = __importDefault(require("./chat.routes.js"));
 const router = (0, express_1.Router)();
 router.use('/auth', auth_routes_js_1.default);
 router.use('/traffic-lights', traffic_light_routes_js_1.default);
 router.use('/cameras', camera_routes_js_1.default);
+router.use('/simulation', simulation_routes_js_1.default);
+router.use('/simulate', simulation_routes_js_1.default);
+router.use('/violations', violation_routes_js_1.default);
+router.use('/fines', violation_routes_js_1.default);
+router.use('/chat', chat_routes_js_1.default);
 // Healthcheck
 router.get('/health', (req, res) => {
     res.status(200).json({

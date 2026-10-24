@@ -66,8 +66,26 @@ export default function PoliceDashboardPage() {
           </div>
 
           <p className="text-xs text-[#6F7070] mt-6 leading-relaxed">
-            Welcome to the Traffic Police Console. Incident verification feeds and junction cameras will appear here.
+            Welcome to the Traffic Police Console. Incident verification feeds, junction cameras, and automated violation challans are managed here.
           </p>
+
+          {/* Quick Action to Violations */}
+          <div className="mt-6 p-4 rounded-2xl bg-linear-to-r from-red-50/60 to-emerald-50/60 border border-[#E5E5E5] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h4 className="text-sm font-extrabold text-[#171717]">
+                Traffic Violations &amp; Fine Payment Status
+              </h4>
+              <p className="text-xs text-[#6F7070] mt-0.5">
+                Review all detected violations grouped by Paid or Unpaid fines with Cloudflare R2 video evidence.
+              </p>
+            </div>
+            <Button asChild size="sm" className="bg-[#171717] hover:bg-black text-white text-xs shrink-0 font-bold">
+              <Link href="/police/violations" className="inline-flex items-center gap-1.5">
+                <span>View Violations</span>
+                <ArrowRight className="w-3.5 h-3.5 ml-0.5" />
+              </Link>
+            </Button>
+          </div>
 
           <div className="mt-6 pt-5 border-t border-[#F5F5F5] flex items-center justify-between">
             <span className="text-xs text-[#999999]">Need to update your details?</span>

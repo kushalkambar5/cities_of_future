@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const violation_controller_js_1 = require("../controllers/violation.controller.js");
+const router = (0, express_1.Router)();
+router.get('/', violation_controller_js_1.getViolations);
+router.post('/verify-all-nano', violation_controller_js_1.verifyAllPendingWithNano);
+router.post('/:id/verify-nano', violation_controller_js_1.verifyViolationWithNano);
+router.post('/:id/pay', violation_controller_js_1.payFine);
+router.patch('/:id/pay', violation_controller_js_1.payFine);
+router.post('/fines/:id/pay', violation_controller_js_1.payFine);
+router.patch('/fines/:id/pay', violation_controller_js_1.payFine);
+exports.default = router;

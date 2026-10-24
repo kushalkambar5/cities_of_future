@@ -351,8 +351,12 @@ class MultiModelPipeline:
                 if writer:
                     self.renderer.draw_helmet(frame, box, kind, name, conf)
 
-            # Process ALPR detections for frame
-            plates_in_frame = self.plate_detector.predict_frame(frame)
+            # Process ALPR detections for frame (optimized: run when vehicles are present and every 3rd frame or when a vehicle lacks an OCR plate)
+            needs_plate = any(tid not in plate_cache or plate_cache[tid][2] for tid in vehicles.keys())
+            if len(vehicles) > 0 and (frame_idx % 3 == 0 or needs_plate):
+                plates_in_frame = self.plate_detector.predict_frame(frame)
+            else:
+                plates_in_frame = []
             for box, text, conf, is_synth in plates_in_frame:
                 tid = associate_detection_to_vehicles(box, vehicles)
                 if tid is not None and text:

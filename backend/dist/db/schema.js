@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.notificationsRelations = exports.finesRelations = exports.evidenceRelations = exports.violationsRelations = exports.routeDistanceCacheRelations = exports.vehicleObservationsRelations = exports.detectionEventsRelations = exports.simulationTrafficLightsRelations = exports.videoFilesRelations = exports.simulationsRelations = exports.camerasRelations = exports.trafficLightsRelations = exports.vehiclesRelations = exports.usersRelations = exports.notifications = exports.fines = exports.evidence = exports.violations = exports.routeDistanceCache = exports.vehicleObservations = exports.detectionEvents = exports.simulationTrafficLights = exports.videoFiles = exports.simulations = exports.cameras = exports.trafficLights = exports.vehicles = exports.users = exports.notificationStatusEnum = exports.notificationChannelEnum = exports.fineStatusEnum = exports.evidenceTypeEnum = exports.violationStatusEnum = exports.violationTypeEnum = exports.detectionEventTypeEnum = exports.trafficLightStateEnum = exports.videoFileStatusEnum = exports.simulationStatusEnum = exports.cameraStatusEnum = exports.userStatusEnum = exports.userRoleEnum = void 0;
+exports.notificationsRelations = exports.finesRelations = exports.evidenceRelations = exports.violationsRelations = exports.routeDistanceCacheRelations = exports.vehicleObservationsRelations = exports.detectionEventsRelations = exports.simulationTrafficLightsRelations = exports.videoFilesRelations = exports.simulationsRelations = exports.camerasRelations = exports.trafficLightsRelations = exports.vehiclesRelations = exports.aiChatsRelations = exports.usersRelations = exports.aiChats = exports.notifications = exports.fines = exports.evidence = exports.violations = exports.routeDistanceCache = exports.vehicleObservations = exports.detectionEvents = exports.simulationTrafficLights = exports.videoFiles = exports.simulations = exports.cameras = exports.trafficLights = exports.vehicles = exports.users = exports.notificationStatusEnum = exports.notificationChannelEnum = exports.fineStatusEnum = exports.evidenceTypeEnum = exports.violationStatusEnum = exports.violationTypeEnum = exports.detectionEventTypeEnum = exports.trafficLightStateEnum = exports.videoFileStatusEnum = exports.simulationStatusEnum = exports.cameraStatusEnum = exports.userStatusEnum = exports.userRoleEnum = void 0;
 const pg_core_1 = require("drizzle-orm/pg-core");
 const drizzle_orm_1 = require("drizzle-orm");
 // ============================================================================
@@ -350,13 +350,44 @@ exports.notifications = (0, pg_core_1.pgTable)('notifications', {
     (0, pg_core_1.index)('idx_notifications_status').on(table.status),
     (0, pg_core_1.index)('idx_notifications_violation_id').on(table.violationId),
 ]);
+/**
+ * 15. ai_chats
+ * Persistent chatbot conversation history and rolling summary for OpenAI Agent SDK.
+ * Stores up to 10 recent messages per user in JSONB array.
+ */
+exports.aiChats = (0, pg_core_1.pgTable)('ai_chats', {
+    id: (0, pg_core_1.serial)('id').primaryKey(),
+    userId: (0, pg_core_1.integer)('user_id')
+        .notNull()
+        .references(() => exports.users.id, { onDelete: 'cascade' }),
+    chats: (0, pg_core_1.jsonb)('chats').default([]).notNull(),
+    chatSummary: (0, pg_core_1.text)('chat_summary'),
+    createdAt: (0, pg_core_1.timestamp)('created_at', { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: (0, pg_core_1.timestamp)('updated_at', { withTimezone: true })
+        .defaultNow()
+        .notNull()
+        .$onUpdate(() => new Date()),
+}, (table) => [
+    (0, pg_core_1.uniqueIndex)('unq_user_ai_chat').on(table.userId),
+    (0, pg_core_1.index)('idx_ai_chats_user_id').on(table.userId),
+]);
 // ============================================================================
 // 3. RELATIONS
 // ============================================================================
-exports.usersRelations = (0, drizzle_orm_1.relations)(exports.users, ({ many }) => ({
+exports.usersRelations = (0, drizzle_orm_1.relations)(exports.users, ({ many, one }) => ({
     vehicles: many(exports.vehicles),
     simulations: many(exports.simulations),
     notifications: many(exports.notifications),
+    aiChat: one(exports.aiChats, {
+        fields: [exports.users.id],
+        references: [exports.aiChats.userId],
+    }),
+}));
+exports.aiChatsRelations = (0, drizzle_orm_1.relations)(exports.aiChats, ({ one }) => ({
+    user: one(exports.users, {
+        fields: [exports.aiChats.userId],
+        references: [exports.users.id],
+    }),
 }));
 exports.vehiclesRelations = (0, drizzle_orm_1.relations)(exports.vehicles, ({ one, many }) => ({
     owner: one(exports.users, {

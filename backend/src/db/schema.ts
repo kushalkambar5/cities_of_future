@@ -444,14 +444,51 @@ export const notifications = pgTable(
   ]
 );
 
+/**
+ * 15. ai_chats
+ * Persistent chatbot conversation history and rolling summary for OpenAI Agent SDK.
+ * Stores up to 10 recent messages per user in JSONB array.
+ */
+export const aiChats = pgTable(
+  'ai_chats',
+  {
+    id: serial('id').primaryKey(),
+    userId: integer('user_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    chats: jsonb('chats').default([]).notNull(),
+    chatSummary: text('chat_summary'),
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp('updated_at', { withTimezone: true })
+      .defaultNow()
+      .notNull()
+      .$onUpdate(() => new Date()),
+  },
+  (table) => [
+    uniqueIndex('unq_user_ai_chat').on(table.userId),
+    index('idx_ai_chats_user_id').on(table.userId),
+  ]
+);
+
 // ============================================================================
 // 3. RELATIONS
 // ============================================================================
 
-export const usersRelations = relations(users, ({ many }) => ({
+export const usersRelations = relations(users, ({ many, one }) => ({
   vehicles: many(vehicles),
   simulations: many(simulations),
   notifications: many(notifications),
+  aiChat: one(aiChats, {
+    fields: [users.id],
+    references: [aiChats.userId],
+  }),
+}));
+
+export const aiChatsRelations = relations(aiChats, ({ one }) => ({
+  user: one(users, {
+    fields: [aiChats.userId],
+    references: [users.id],
+  }),
 }));
 
 export const vehiclesRelations = relations(vehicles, ({ one, many }) => ({
@@ -655,3 +692,6 @@ export type NewFine = typeof fines.$inferInsert;
 
 export type Notification = typeof notifications.$inferSelect;
 export type NewNotification = typeof notifications.$inferInsert;
+
+export type AiChat = typeof aiChats.$inferSelect;
+export type NewAiChat = typeof aiChats.$inferInsert;

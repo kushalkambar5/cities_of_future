@@ -20,7 +20,7 @@ class Settings(BaseSettings):
     APP_VERSION: str = "1.0.0"
     DEBUG: bool = False
     HOST: str = "0.0.0.0"
-    PORT: int = 8000
+    PORT: int = 8005
     CORS_ORIGINS: List[str] = ["*"]
     MAX_UPLOAD_BYTES: int = 500 * 1024 * 1024  # 500 MB
 

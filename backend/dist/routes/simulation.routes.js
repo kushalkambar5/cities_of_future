@@ -1,0 +1,9 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const simulation_controller_js_1 = require("../controllers/simulation.controller.js");
+const router = (0, express_1.Router)();
+router.get('/cameras', simulation_controller_js_1.getSimulationCameras);
+router.post('/assign-video', simulation_controller_js_1.assignCameraVideo);
+router.post('/process', simulation_controller_js_1.processSimulation);
+exports.default = router;

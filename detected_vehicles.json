@@ -1,0 +1,1660 @@
+[
+  {
+    "plate_number": "2C",
+    "track_id": 1,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": false,
+    "plate_confidence": 0.89,
+    "violations": [
+      "no_helmet",
+      "wrong_side",
+      "zigzag",
+      "illegal_u_turn",
+      "accident"
+    ],
+    "helmet_status": "no_helmet",
+    "seatbelt_status": "belt",
+    "speed_kmh": 20.23
+  },
+  {
+    "plate_number": "KA29TS4394",
+    "track_id": 2,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "wrong_side",
+      "illegal_u_turn",
+      "zigzag",
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 13.48
+  },
+  {
+    "plate_number": "WB38HT6915",
+    "track_id": 3,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "wrong_side",
+      "illegal_u_turn",
+      "zigzag",
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "belt",
+    "speed_kmh": 11.27
+  },
+  {
+    "plate_number": "V9G99",
+    "track_id": 4,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": false,
+    "plate_confidence": 0.7,
+    "violations": [
+      "wrong_side",
+      "illegal_u_turn",
+      "zigzag",
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 39.49
+  },
+  {
+    "plate_number": "TN27MQ6610",
+    "track_id": 6,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "wrong_side",
+      "illegal_u_turn",
+      "zigzag",
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "belt",
+    "speed_kmh": 12.65
+  },
+  {
+    "plate_number": "KA66LU1781",
+    "track_id": 7,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 0.0
+  },
+  {
+    "plate_number": "3196",
+    "track_id": 10,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": false,
+    "plate_confidence": 0.86,
+    "violations": [
+      "no_helmet",
+      "wrong_side",
+      "illegal_u_turn",
+      "zigzag",
+      "accident"
+    ],
+    "helmet_status": "no_helmet",
+    "seatbelt_status": "belt",
+    "speed_kmh": 16.77
+  },
+  {
+    "plate_number": "KL01WX1145",
+    "track_id": 11,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "belt",
+    "speed_kmh": 0.0
+  },
+  {
+    "plate_number": "TS41YG6234",
+    "track_id": 12,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "overspeed",
+      "zigzag",
+      "wrong_side",
+      "illegal_u_turn",
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 363.78
+  },
+  {
+    "plate_number": "RJ04GM9528",
+    "track_id": 18,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 0.0
+  },
+  {
+    "plate_number": "WB55BZ4400",
+    "track_id": 22,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "overspeed",
+      "zigzag",
+      "wrong_side",
+      "accident"
+    ],
+    "helmet_status": "helmet",
+    "seatbelt_status": "belt",
+    "speed_kmh": 95.79
+  },
+  {
+    "plate_number": "WB29RJ4432",
+    "track_id": 24,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 0.0
+  },
+  {
+    "plate_number": "RJ81NS5747",
+    "track_id": 26,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 0.0
+  },
+  {
+    "plate_number": "RJ78XA1795",
+    "track_id": 28,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "wrong_side",
+      "illegal_u_turn",
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 10.3
+  },
+  {
+    "plate_number": "DL40PA2113",
+    "track_id": 29,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "wrong_side",
+      "illegal_u_turn",
+      "zigzag",
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 10.14
+  },
+  {
+    "plate_number": "UP65KT6630",
+    "track_id": 31,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "wrong_side",
+      "illegal_u_turn",
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 10.79
+  },
+  {
+    "plate_number": "MH31CN3222",
+    "track_id": 32,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "wrong_side",
+      "illegal_u_turn",
+      "zigzag",
+      "accident"
+    ],
+    "helmet_status": "helmet",
+    "seatbelt_status": "belt",
+    "speed_kmh": 10.53
+  },
+  {
+    "plate_number": "TS15CF2900",
+    "track_id": 34,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 10.22
+  },
+  {
+    "plate_number": "MH45LK1771",
+    "track_id": 36,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "wrong_side",
+      "illegal_u_turn",
+      "zigzag",
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 12.38
+  },
+  {
+    "plate_number": "WB90QU5028",
+    "track_id": 40,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 0.0
+  },
+  {
+    "plate_number": "MH37AN7668",
+    "track_id": 42,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 0.0
+  },
+  {
+    "plate_number": "UP05DQ4251",
+    "track_id": 46,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 10.37
+  },
+  {
+    "plate_number": "KA86XP3191",
+    "track_id": 49,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "no_helmet",
+      "accident"
+    ],
+    "helmet_status": "no_helmet",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 13.44
+  },
+  {
+    "plate_number": "WB61SR5415",
+    "track_id": 56,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 0.0
+  },
+  {
+    "plate_number": "DL56EZ8681",
+    "track_id": 58,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 0.0
+  },
+  {
+    "plate_number": "KL83CS9162",
+    "track_id": 62,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 13.79
+  },
+  {
+    "plate_number": "RJ17FZ6504",
+    "track_id": 63,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 29.51
+  },
+  {
+    "plate_number": "KL28MW3292",
+    "track_id": 67,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 0.0
+  },
+  {
+    "plate_number": "UP71XZ1776",
+    "track_id": 70,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "no_seatbelt",
+      "wrong_side",
+      "illegal_u_turn",
+      "zigzag",
+      "accident"
+    ],
+    "helmet_status": "helmet",
+    "seatbelt_status": "no_belt",
+    "speed_kmh": 26.64
+  },
+  {
+    "plate_number": "MH40RM9303",
+    "track_id": 72,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 0.0
+  },
+  {
+    "plate_number": "KL57ZX5941",
+    "track_id": 74,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 0.0
+  },
+  {
+    "plate_number": "MH29FU2844",
+    "track_id": 77,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 0.0
+  },
+  {
+    "plate_number": "MH86VP2724",
+    "track_id": 80,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 0.0
+  },
+  {
+    "plate_number": "GJ86ME5284",
+    "track_id": 81,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 12.45
+  },
+  {
+    "plate_number": "WB73JK6001",
+    "track_id": 82,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 29.3
+  },
+  {
+    "plate_number": "RJ52YN2663",
+    "track_id": 83,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 13.85
+  },
+  {
+    "plate_number": "GJ98HH9591",
+    "track_id": 91,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 11.64
+  },
+  {
+    "plate_number": "DL20AE4163",
+    "track_id": 92,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 0.0
+  },
+  {
+    "plate_number": "RJ70MR1421",
+    "track_id": 93,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "belt",
+    "speed_kmh": 10.56
+  },
+  {
+    "plate_number": "WB89VE2020",
+    "track_id": 95,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "helmet",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 17.08
+  },
+  {
+    "plate_number": "GJ85QV4150",
+    "track_id": 97,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 10.86
+  },
+  {
+    "plate_number": "WB83SC5151",
+    "track_id": 99,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 10.02
+  },
+  {
+    "plate_number": "KA52RM9249",
+    "track_id": 104,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 10.28
+  },
+  {
+    "plate_number": "KL66KS2504",
+    "track_id": 106,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "belt",
+    "speed_kmh": 11.07
+  },
+  {
+    "plate_number": "UP36ZR3419",
+    "track_id": 107,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 0.0
+  },
+  {
+    "plate_number": "WB71MJ2895",
+    "track_id": 108,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 11.36
+  },
+  {
+    "plate_number": "KL86UE3896",
+    "track_id": 110,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "helmet",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 14.66
+  },
+  {
+    "plate_number": "KL04VR1080",
+    "track_id": 111,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 0.0
+  },
+  {
+    "plate_number": "TS68MR1696",
+    "track_id": 112,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 0.0
+  },
+  {
+    "plate_number": "TS50GV8705",
+    "track_id": 113,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 42.7
+  },
+  {
+    "plate_number": "RJ61TH6822",
+    "track_id": 114,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 0.0
+  },
+  {
+    "plate_number": "TS58PE3166",
+    "track_id": 118,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 14.44
+  },
+  {
+    "plate_number": "KL42RW7760",
+    "track_id": 119,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "belt",
+    "speed_kmh": 0.0
+  },
+  {
+    "plate_number": "RJ16BX4664",
+    "track_id": 120,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 0.0
+  },
+  {
+    "plate_number": "KA88EV4288",
+    "track_id": 121,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 0.0
+  },
+  {
+    "plate_number": "KL98HU3279",
+    "track_id": 122,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 11.08
+  },
+  {
+    "plate_number": "GJ34JQ5533",
+    "track_id": 124,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "belt",
+    "speed_kmh": 0.0
+  },
+  {
+    "plate_number": "DL55PL5494",
+    "track_id": 130,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "overspeed",
+      "no_helmet",
+      "accident"
+    ],
+    "helmet_status": "no_helmet",
+    "seatbelt_status": "belt",
+    "speed_kmh": 374.13
+  },
+  {
+    "plate_number": "TN87VN1652",
+    "track_id": 132,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 0.0
+  },
+  {
+    "plate_number": "TS54FA9842",
+    "track_id": 135,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "helmet",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 10.28
+  },
+  {
+    "plate_number": "MH32KV3441",
+    "track_id": 136,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "wrong_side",
+      "illegal_u_turn",
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 10.74
+  },
+  {
+    "plate_number": "RJ48BF6888",
+    "track_id": 151,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 0.0
+  },
+  {
+    "plate_number": "TN25ZS9844",
+    "track_id": 152,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 10.32
+  },
+  {
+    "plate_number": "RJ75TT7971",
+    "track_id": 153,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "overspeed",
+      "accident"
+    ],
+    "helmet_status": "helmet",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 63.71
+  },
+  {
+    "plate_number": "MH14YQ3768",
+    "track_id": 155,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 17.4
+  },
+  {
+    "plate_number": "KL06TW1102",
+    "track_id": 167,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 25.3
+  },
+  {
+    "plate_number": "KA61ER9080",
+    "track_id": 171,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "no_seatbelt",
+      "accident"
+    ],
+    "helmet_status": "helmet",
+    "seatbelt_status": "no_belt",
+    "speed_kmh": 39.21
+  },
+  {
+    "plate_number": "TS93BS6365",
+    "track_id": 172,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 0.0
+  },
+  {
+    "plate_number": "GJ60JG2342",
+    "track_id": 176,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 15.6
+  },
+  {
+    "plate_number": "TN91FD7715",
+    "track_id": 185,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 11.7
+  },
+  {
+    "plate_number": "GJ97TW2424",
+    "track_id": 193,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 13.47
+  },
+  {
+    "plate_number": "DL90XX4625",
+    "track_id": 194,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "overspeed",
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 3739.77
+  },
+  {
+    "plate_number": "KA57UC1193",
+    "track_id": 195,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "overspeed",
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 295.48
+  },
+  {
+    "plate_number": "991889",
+    "track_id": 203,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": false,
+    "plate_confidence": 0.74,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "belt",
+    "speed_kmh": 47.83
+  },
+  {
+    "plate_number": "KA35QG9582",
+    "track_id": 205,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 0.0
+  },
+  {
+    "plate_number": "TN40TL8195",
+    "track_id": 208,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "overspeed",
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "belt",
+    "speed_kmh": 95.11
+  },
+  {
+    "plate_number": "MH52JM6368",
+    "track_id": 213,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "belt",
+    "speed_kmh": 14.14
+  },
+  {
+    "plate_number": "MQY",
+    "track_id": 215,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": false,
+    "plate_confidence": 0.99,
+    "violations": [
+      "overspeed",
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "belt",
+    "speed_kmh": 322.88
+  },
+  {
+    "plate_number": "TS50YQ7435",
+    "track_id": 216,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "belt",
+    "speed_kmh": 34.72
+  },
+  {
+    "plate_number": "KL36MX8350",
+    "track_id": 219,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "overspeed",
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 218.11
+  },
+  {
+    "plate_number": "TS36XM6803",
+    "track_id": 225,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 0.0
+  },
+  {
+    "plate_number": "WB14AC1427",
+    "track_id": 228,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 18.21
+  },
+  {
+    "plate_number": "KA40SN7854",
+    "track_id": 230,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 14.23
+  },
+  {
+    "plate_number": "WB98KK3661",
+    "track_id": 233,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 23.06
+  },
+  {
+    "plate_number": "TN58LB1958",
+    "track_id": 234,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 13.23
+  },
+  {
+    "plate_number": "KA33NS3055",
+    "track_id": 238,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 29.62
+  },
+  {
+    "plate_number": "KL34WE1629",
+    "track_id": 242,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 17.24
+  },
+  {
+    "plate_number": "WB44WX6558",
+    "track_id": 243,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 26.92
+  },
+  {
+    "plate_number": "TS79AY6942",
+    "track_id": 248,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 12.76
+  },
+  {
+    "plate_number": "MH55NA3978",
+    "track_id": 254,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 39.62
+  },
+  {
+    "plate_number": "MH16UC5853",
+    "track_id": 255,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 17.34
+  },
+  {
+    "plate_number": "TN33CD4299",
+    "track_id": 256,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 12.16
+  },
+  {
+    "plate_number": "WB16JJ9448",
+    "track_id": 268,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 15.06
+  },
+  {
+    "plate_number": "UP67PE5496",
+    "track_id": 269,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 0.0
+  },
+  {
+    "plate_number": "MH78GR1109",
+    "track_id": 270,
+    "video": "Helmet Detection (online-video-cutter.com).mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "accident"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 0.0
+  },
+  {
+    "plate_number": "BBDB4668",
+    "track_id": 274,
+    "video": "Licence Plate Camera Illustration Video (online-video-cutter.com).mp4",
+    "is_synthetic": false,
+    "plate_confidence": 0.94,
+    "violations": [],
+    "helmet_status": "unknown",
+    "seatbelt_status": "belt",
+    "speed_kmh": 28.84
+  },
+  {
+    "plate_number": "DL78LU7089",
+    "track_id": 275,
+    "video": "sample_cctv_traffic.mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 0.0
+  },
+  {
+    "plate_number": "DL29ML8917",
+    "track_id": 280,
+    "video": "sample_cctv_traffic.mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "overspeed",
+      "zigzag",
+      "wrong_side",
+      "illegal_u_turn"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "belt",
+    "speed_kmh": 85.38
+  },
+  {
+    "plate_number": "RJ32SP5072",
+    "track_id": 281,
+    "video": "sample_cctv_traffic.mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "wrong_side",
+      "zigzag",
+      "illegal_u_turn"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "belt",
+    "speed_kmh": 51.24
+  },
+  {
+    "plate_number": "KA66BW1553",
+    "track_id": 282,
+    "video": "sample_cctv_traffic.mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "overspeed",
+      "wrong_side",
+      "illegal_u_turn",
+      "zigzag"
+    ],
+    "helmet_status": "helmet",
+    "seatbelt_status": "belt",
+    "speed_kmh": 88.66
+  },
+  {
+    "plate_number": "UP63FP3229",
+    "track_id": 285,
+    "video": "sample_cctv_traffic.mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 10.91
+  },
+  {
+    "plate_number": "DL64QK4811",
+    "track_id": 289,
+    "video": "sample_cctv_traffic.mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "overspeed"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "belt",
+    "speed_kmh": 68.32
+  },
+  {
+    "plate_number": "MH42VY2053",
+    "track_id": 291,
+    "video": "sample_cctv_traffic.mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 13.81
+  },
+  {
+    "plate_number": "RJ95MT2428",
+    "track_id": 294,
+    "video": "sample_cctv_traffic.mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [],
+    "helmet_status": "unknown",
+    "seatbelt_status": "belt",
+    "speed_kmh": 15.88
+  },
+  {
+    "plate_number": "TN52MS3146",
+    "track_id": 299,
+    "video": "sample_cctv_traffic.mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "overspeed"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "belt",
+    "speed_kmh": 102.98
+  },
+  {
+    "plate_number": "GJ13LG3885",
+    "track_id": 302,
+    "video": "sample_cctv_traffic.mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 10.42
+  },
+  {
+    "plate_number": "UP12RS3432",
+    "track_id": 306,
+    "video": "sample_cctv_traffic.mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 10.68
+  },
+  {
+    "plate_number": "GJ10HV8647",
+    "track_id": 308,
+    "video": "sample_cctv_traffic.mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 0.0
+  },
+  {
+    "plate_number": "GJ37HA2170",
+    "track_id": 315,
+    "video": "sample_cctv_traffic.mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 14.28
+  },
+  {
+    "plate_number": "MH60QT9414",
+    "track_id": 316,
+    "video": "sample_cctv_traffic.mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 0.0
+  },
+  {
+    "plate_number": "WB27PS8231",
+    "track_id": 317,
+    "video": "sample_cctv_traffic.mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "overspeed"
+    ],
+    "helmet_status": "helmet",
+    "seatbelt_status": "belt",
+    "speed_kmh": 65.15
+  },
+  {
+    "plate_number": "KA01YR3500",
+    "track_id": 318,
+    "video": "sample_cctv_traffic.mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "overspeed"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "belt",
+    "speed_kmh": 68.18
+  },
+  {
+    "plate_number": "KL84FB5845",
+    "track_id": 319,
+    "video": "sample_cctv_traffic.mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 0.0
+  },
+  {
+    "plate_number": "TN37QZ4791",
+    "track_id": 321,
+    "video": "sample_cctv_traffic.mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 0.0
+  },
+  {
+    "plate_number": "AIA400H",
+    "track_id": 322,
+    "video": "sample_cctv_traffic.mp4",
+    "is_synthetic": false,
+    "plate_confidence": 0.43,
+    "violations": [],
+    "helmet_status": "unknown",
+    "seatbelt_status": "belt",
+    "speed_kmh": 58.9
+  },
+  {
+    "plate_number": "WB36JF2655",
+    "track_id": 328,
+    "video": "sample_cctv_traffic.mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 10.52
+  },
+  {
+    "plate_number": "KA49NH9880",
+    "track_id": 329,
+    "video": "sample_cctv_traffic.mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [],
+    "helmet_status": "unknown",
+    "seatbelt_status": "belt",
+    "speed_kmh": 45.2
+  },
+  {
+    "plate_number": "111",
+    "track_id": 330,
+    "video": "sample_cctv_traffic.mp4",
+    "is_synthetic": false,
+    "plate_confidence": 0.72,
+    "violations": [
+      "overspeed"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "belt",
+    "speed_kmh": 60.63
+  },
+  {
+    "plate_number": "DL11PZ3877",
+    "track_id": 331,
+    "video": "sample_cctv_traffic.mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 0.0
+  },
+  {
+    "plate_number": "TS11SY5801",
+    "track_id": 336,
+    "video": "sample_cctv_traffic.mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 12.03
+  },
+  {
+    "plate_number": "KA09TQ6291",
+    "track_id": 337,
+    "video": "sample_cctv_traffic.mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [
+      "overspeed"
+    ],
+    "helmet_status": "unknown",
+    "seatbelt_status": "belt",
+    "speed_kmh": 61.4
+  },
+  {
+    "plate_number": "RJ46NK5778",
+    "track_id": 342,
+    "video": "sample_cctv_traffic.mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 10.6
+  },
+  {
+    "plate_number": "WB26TF2306",
+    "track_id": 344,
+    "video": "sample_cctv_traffic.mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 11.36
+  },
+  {
+    "plate_number": "UP41EW2094",
+    "track_id": 348,
+    "video": "sample_cctv_traffic.mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 13.18
+  },
+  {
+    "plate_number": "UP82XE4557",
+    "track_id": 349,
+    "video": "sample_cctv_traffic.mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 10.85
+  },
+  {
+    "plate_number": "GJ65KD2883",
+    "track_id": 353,
+    "video": "sample_cctv_traffic.mp4",
+    "is_synthetic": true,
+    "plate_confidence": 0.0,
+    "violations": [],
+    "helmet_status": "unknown",
+    "seatbelt_status": "unknown",
+    "speed_kmh": 10.34
+  }
+]

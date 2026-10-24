@@ -9,10 +9,14 @@ import {
   User, 
   LogOut, 
   ShieldCheck, 
-  BadgeCheck 
+  BadgeCheck,
+  PlayCircle,
+  FileText,
+  AlertTriangle
 } from "lucide-react";
 import { getStoredUser, clearAuthSession, User as UserType } from "@/lib/api";
 import { Badge } from "@/components/ui/badge";
+import { TrafficChatWidget } from "./TrafficChatWidget";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -78,6 +82,38 @@ export function DashboardLayout({
             href: "/create",
             icon: ShieldCheck,
             active: pathname === "/create" || pathname === "/admin/create",
+          },
+          {
+            label: "AI Video Simulation",
+            href: "/simulate",
+            icon: PlayCircle,
+            active: pathname === "/simulate" || pathname === "/admin/simulate",
+          },
+          {
+            label: "Violations & Fines",
+            href: "/admin/violations",
+            icon: FileText,
+            active: pathname === "/admin/violations" || pathname === "/violations",
+          },
+        ]
+      : []),
+    ...(expectedRole === "CITIZEN"
+      ? [
+          {
+            label: "My Violations & Fines",
+            href: "/citizen/violations",
+            icon: FileText,
+            active: pathname === "/citizen/violations",
+          },
+        ]
+      : []),
+    ...(expectedRole === "POLICE"
+      ? [
+          {
+            label: "Traffic Violations",
+            href: "/police/violations",
+            icon: FileText,
+            active: pathname === "/police/violations",
           },
         ]
       : []),
@@ -179,6 +215,9 @@ export function DashboardLayout({
       <main className="flex-1 p-5 sm:p-8 lg:p-10 max-w-6xl overflow-y-auto">
         {children}
       </main>
+
+      {/* Role-Aware OpenAI Agent SDK Chatbot */}
+      <TrafficChatWidget user={currentUser} role={expectedRole} />
     </div>
   );
 }

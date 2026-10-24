@@ -17,6 +17,7 @@ import {
   Camera 
 } from "@/lib/api";
 import { UnifiedAsset } from "@/components/map/Admin3DMap";
+import { TrafficChatWidget } from "@/components/dashboard/TrafficChatWidget";
 import { 
   Plus, 
   Trash2, 
@@ -74,8 +75,10 @@ export default function AdminCreateInfrastructurePage() {
   const [listFilter, setListFilter] = useState<"all" | "traffic-light" | "camera">("all");
 
   // Check auth user
+  const [currentUser, setCurrentUser] = useState<any>(null);
   useEffect(() => {
     const user = getStoredUser();
+    setCurrentUser(user);
     if (user && user.role !== "ADMIN") {
       console.warn("User role is not ADMIN, but page is open in preview mode.");
     }
@@ -853,6 +856,7 @@ export default function AdminCreateInfrastructurePage() {
           />
         </div>
       </div>
+      <TrafficChatWidget user={currentUser} role="ADMIN" />
     </div>
   );
 }
