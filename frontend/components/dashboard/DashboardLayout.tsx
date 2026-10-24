@@ -71,6 +71,16 @@ export function DashboardLayout({
       icon: LayoutDashboard,
       active: pathname === `/${rolePrefix}/dashboard`,
     },
+    ...(expectedRole === "ADMIN"
+      ? [
+          {
+            label: "3D Infrastructure",
+            href: "/create",
+            icon: ShieldCheck,
+            active: pathname === "/create" || pathname === "/admin/create",
+          },
+        ]
+      : []),
     {
       label: "Profile",
       href: `/${rolePrefix}/profile`,

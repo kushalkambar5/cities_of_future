@@ -19,6 +19,28 @@ export interface AuthResponse {
   };
 }
 
+export interface TrafficLight {
+  id: string;
+  name: string;
+  latitude: number;
+  longitude: number;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface Camera {
+  id: string;
+  name: string;
+  latitude: number;
+  longitude: number;
+  speedLimit: number;
+  trafficLightId?: string | null;
+  trafficLightName?: string | null;
+  status: 'ACTIVE' | 'INACTIVE' | 'MAINTENANCE';
+  createdAt?: string;
+  updatedAt?: string;
+}
+
 export function getStoredToken(): string | null {
   if (typeof window === 'undefined') return null;
   return localStorage.getItem('navanagar_token');
@@ -66,10 +88,25 @@ export async function apiRequest<T>(
     headers,
   });
 
-  const data = await response.json();
+  const contentType = response.headers.get('content-type') || '';
+  let data: any = null;
+
+  if (contentType.includes('application/json')) {
+    try {
+      data = await response.json();
+    } catch {
+      data = null;
+    }
+  } else {
+    const rawText = await response.text();
+    if (!response.ok) {
+      throw new Error(`Server returned HTTP ${response.status}: ${response.statusText || 'Not Found'}`);
+    }
+    data = rawText;
+  }
 
   if (!response.ok) {
-    throw new Error(data.message || 'Something went wrong');
+    throw new Error(data?.message || `Request failed with status ${response.status}`);
   }
 
   return data as T;
@@ -112,4 +149,89 @@ export async function updateProfileApi(payload: {
     method: 'PUT',
     body: JSON.stringify(payload),
   });
+}
+
+// ---------------------------------------------------------------------------
+// Traffic Lights API
+// ---------------------------------------------------------------------------
+
+export async function getTrafficLightsApi(): Promise<{
+  success: boolean;
+  count: number;
+  data: TrafficLight[];
+}> {
+  return apiRequest<{ success: boolean; count: number; data: TrafficLight[] }>(
+    '/traffic-lights',
+    { method: 'GET' }
+  );
+}
+
+export async function createTrafficLightApi(payload: {
+  id?: string;
+  name: string;
+  latitude: number;
+  longitude: number;
+}): Promise<{ success: boolean; message: string; data: TrafficLight }> {
+  return apiRequest<{ success: boolean; message: string; data: TrafficLight }>(
+    '/traffic-lights',
+    {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    }
+  );
+}
+
+export async function deleteTrafficLightApi(
+  id: string
+): Promise<{ success: boolean; message: string; data: TrafficLight }> {
+  return apiRequest<{ success: boolean; message: string; data: TrafficLight }>(
+    `/traffic-lights/${encodeURIComponent(id)}`,
+    {
+      method: 'DELETE',
+    }
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Cameras API
+// ---------------------------------------------------------------------------
+
+export async function getCamerasApi(): Promise<{
+  success: boolean;
+  count: number;
+  data: Camera[];
+}> {
+  return apiRequest<{ success: boolean; count: number; data: Camera[] }>(
+    '/cameras',
+    { method: 'GET' }
+  );
+}
+
+export async function createCameraApi(payload: {
+  id?: string;
+  name: string;
+  latitude: number;
+  longitude: number;
+  speedLimit?: number;
+  trafficLightId?: string | null;
+  status?: 'ACTIVE' | 'INACTIVE' | 'MAINTENANCE';
+}): Promise<{ success: boolean; message: string; data: Camera }> {
+  return apiRequest<{ success: boolean; message: string; data: Camera }>(
+    '/cameras',
+    {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    }
+  );
+}
+
+export async function deleteCameraApi(
+  id: string
+): Promise<{ success: boolean; message: string; data: Camera }> {
+  return apiRequest<{ success: boolean; message: string; data: Camera }>(
+    `/cameras/${encodeURIComponent(id)}`,
+    {
+      method: 'DELETE',
+    }
+  );
 }

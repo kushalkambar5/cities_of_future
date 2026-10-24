@@ -5,8 +5,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const auth_routes_js_1 = __importDefault(require("./auth.routes.js"));
+const traffic_light_routes_js_1 = __importDefault(require("./traffic-light.routes.js"));
+const camera_routes_js_1 = __importDefault(require("./camera.routes.js"));
 const router = (0, express_1.Router)();
 router.use('/auth', auth_routes_js_1.default);
+router.use('/traffic-lights', traffic_light_routes_js_1.default);
+router.use('/cameras', camera_routes_js_1.default);
 // Healthcheck
 router.get('/health', (req, res) => {
     res.status(200).json({

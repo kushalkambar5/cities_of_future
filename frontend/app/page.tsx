@@ -81,9 +81,6 @@ export default function Home() {
               <span className="font-bold text-base tracking-tight text-[#171717]">
                 Navanagar
               </span>
-              <Badge variant="blue" className="ml-2 py-0 px-2 text-[10px]">
-                PLATFORM
-              </Badge>
             </div>
           </div>
 
@@ -137,10 +134,6 @@ export default function Home() {
           {/* Left Column (7 cols): Platform Mission & Core Value */}
           <div className="lg:col-span-7 flex flex-col justify-between bg-white rounded-3xl p-6 sm:p-8 lg:p-10 shadow-soft border border-[#E5E5E5]">
             <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#BAE2EF]/60 text-[#171717] text-xs font-semibold mb-4">
-                <ShieldCheck className="w-4 h-4 text-[#54A8BD]" strokeWidth={2.2} />
-                <span>Smart City Road Safety Infrastructure</span>
-              </div>
 
               <h1 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold tracking-tight text-[#171717] leading-[1.18]">
                 Fair, transparent road safety for every driver.
@@ -279,15 +272,15 @@ export default function Home() {
             </Card>
 
             {/* Core Principle Badge Card */}
-            <div className="bg-[#171717] text-white rounded-3xl p-5 shadow-soft flex items-center justify-between gap-4">
+            <div className="bg-[#ffffff] text-black rounded-3xl p-5 shadow-soft flex items-center justify-between gap-4">
               <div>
-                <span className="text-[10px] uppercase font-bold text-[#BAE2EF] tracking-wider block">
+                <span className="text-[10px] uppercase font-bold text-[#000000] tracking-wider block">
                   Core Philosophy
                 </span>
                 <h4 className="text-sm font-bold mt-0.5">
                   Fairness Over Revenue Collection
                 </h4>
-                <p className="text-xs text-white/70 mt-1">
+                <p className="text-xs text-black/70 mt-1">
                   Engineered to improve commute safety and eliminate predatory camera trap incentives.
                 </p>
               </div>
