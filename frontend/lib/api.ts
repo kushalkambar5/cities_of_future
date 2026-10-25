@@ -83,10 +83,20 @@ export async function apiRequest<T>(
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  const response = await fetch(`${API_BASE}${endpoint}`, {
-    ...options,
-    headers,
-  });
+  let response: Response;
+  try {
+    response = await fetch(`${API_BASE}${endpoint}`, {
+      ...options,
+      headers,
+    });
+  } catch (networkError: any) {
+    if (networkError?.name === 'TypeError' || networkError?.message?.includes('fetch')) {
+      throw new Error(
+        `Unable to reach backend server at ${API_BASE}. Please ensure the backend server is running on port 5000.`
+      );
+    }
+    throw networkError;
+  }
 
   const contentType = response.headers.get('content-type') || '';
   let data: any = null;
