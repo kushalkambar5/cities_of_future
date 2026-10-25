@@ -35,7 +35,7 @@ import {
 const Admin3DMap = dynamic(() => import("@/components/map/Admin3DMap"), {
   ssr: false,
   loading: () => (
-    <div className="w-full h-full min-h-[550px] rounded-3xl bg-[#07101d] flex flex-col items-center justify-center text-slate-300 gap-3 border border-[#E5E5E5]">
+    <div className="w-full h-full min-h-[550px] rounded-3xl bg-[#F7F7F6] flex flex-col items-center justify-center text-[#6F7070] gap-3 border border-[#E5E5E5]">
       <div className="w-8 h-8 rounded-full border-2 border-sky-400 border-t-transparent animate-spin" />
       <p className="text-xs font-semibold">Initializing OpenFreeMap 3D WebGL Engine...</p>
     </div>

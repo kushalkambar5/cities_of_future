@@ -173,61 +173,181 @@ Before running the platform, ensure the following dependencies are installed on 
 
 ## Getting Started
 
-### 1. Clone Repository & Setup Environment
+### Services & Port Overview
+
+| Service | Technology | Port | Description |
+| :--- | :--- | :--- | :--- |
+| **Frontend** | Next.js 16 + React 19 | `3000` | Citizen portal, police command center & 3D admin map |
+| **Backend API** | Express 5 + TypeScript | `5000` | Core REST API, simulation engine & AI auditing |
+| **FastAPI ML Service** | Python + FastAPI + YOLOv8 | `8005` | Vision inference pipeline (speed, helmet, seatbelt, plates) |
+| **PostgreSQL Database** | PostgreSQL + Drizzle ORM | `5432` | Primary database storing cameras, violations & fines |
+| **OpenWA WhatsApp Service** | OpenWA Gateway (Docker) | `2785` | WhatsApp evidence delivery (*on the openwa port*) |
+| **Drizzle Studio** | Drizzle ORM GUI | `4983` | Visual database management dashboard |
+
+---
+
+### Quick Setup & Run Cheatsheet
+
+For developers who want to spin up all services quickly:
 
 ```bash
-git clone https://github.com/your-org/cities_of_future.git
+# 1. Start Database (PostgreSQL)
+docker run -d --name cities-postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=cities_of_future -p 5432:5432 postgres:16
+cd backend && npm run db:push
+
+# 2. Start OpenWA WhatsApp Gateway (on the openwa port: 2785)
+docker run -d --name openwa-api -p 2785:2785 openwa-openwa
+# Or if container already exists:
+docker start openwa-api
+
+# 3. Setup & Run Backend (Express API - Port 5000)
+cd backend
+npm install
+cp .env.example .env
+npm run dev
+
+# 4. Setup & Run FastAPI ML Engine (Port 8005)
+cd models
+python -m venv venv
+venv\Scripts\activate            # Linux/macOS: source venv/bin/activate
+pip install -r requirements.txt
+python main.py
+
+# 5. Setup & Run Frontend (Next.js - Port 3000)
+cd frontend
+npm install
+cp .env.example .env
+npm run dev
+```
+
+---
+
+### Detailed Step-by-Step Setup
+
+#### 1. Clone Repository & Setup Environment
+
+```bash
+git clone https://github.com/kushalkambar5/cities_of_future.git
 cd cities_of_future
 ```
 
-### 2. Configure & Run Backend Database
+---
 
-1. Navigate to the backend directory and install dependencies:
+#### 2. Setup & Run Database (PostgreSQL & Drizzle ORM)
+
+The platform requires a PostgreSQL database instance running on port `5432`.
+
+1. **Start PostgreSQL**:
+   - **Option A (Docker)**:
+     ```bash
+     docker run -d --name cities-postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=cities_of_future -p 5432:5432 postgres:16
+     ```
+   - **Option B (Native PostgreSQL)**:
+     Ensure your local PostgreSQL service is running and create the database:
+     ```bash
+     psql -U postgres -c "CREATE DATABASE cities_of_future;"
+     ```
+
+2. **Navigate to the backend directory and configure environment**:
    ```bash
    cd backend
    npm install
-   ```
-
-2. Create `.env` based on `.env.example`:
-   ```bash
    cp .env.example .env
    ```
 
-3. Update `DATABASE_URL` with your PostgreSQL credentials:
+3. **Verify `DATABASE_URL` in `backend/.env`**:
    ```env
    DATABASE_URL=postgresql://postgres:postgres@localhost:5432/cities_of_future
-   PORT=5000
    ```
 
-4. Push the Drizzle schema to your database:
+4. **Push Drizzle schema migrations to database**:
    ```bash
    npm run db:push
    ```
 
    > [!TIP]
-   > You can launch Drizzle Studio at any time to visually inspect records:
+   > You can inspect records visually at any time using Drizzle Studio:
    > ```bash
    > npm run db:studio
    > ```
-
-5. Start the backend development server:
-   ```bash
-   npm run dev
-   # In a separate terminal or once built:
-   npm start
-   ```
-   The backend API will be available at `http://localhost:5000`.
+   > Drizzle Studio will launch at `https://local.drizzle.studio` (or `http://localhost:4983`).
 
 ---
 
-### 3. Setup & Run ML Detection Service
+#### 3. Setup & Run OpenWA WhatsApp Service (on the openwa port)
 
-1. Open a new terminal and navigate to the `models` directory:
+Navanagar uses OpenWA to dispatch instant citation alerts, challan PDFs, and video evidence to motorists via WhatsApp. OpenWA runs as a dedicated gateway service **on the openwa port** (`2785`).
+
+1. **Launch the OpenWA container on the openwa port**:
+   ```bash
+   # Run OpenWA Docker container on the openwa port (2785)
+   docker run -d --name openwa-api -p 2785:2785 openwa-openwa
+
+   # Or resume an existing container:
+   docker start openwa-api
+   ```
+
+2. **Verify connection on the openwa port**:
+   - The OpenWA REST API is accessible **on the openwa port** at: `http://localhost:2785` (API base: `http://localhost:2785/api`).
+   - Check active sessions:
+     ```bash
+     curl http://localhost:2785/api/sessions
+     ```
+   - Scan the WhatsApp Web QR code to link your bot number by navigating to `http://localhost:2785` in your browser.
+
+3. **Backend configuration for OpenWA**:
+   Ensure `backend/.env` includes the OpenWA URL pointing to port `2785`:
+   ```env
+   OPENWA_SERVER_URL=http://localhost:2785/api
+   OPENWA_API_KEY=your_openwa_api_key_here
+   ```
+
+---
+
+#### 4. Setup & Run Backend API (Express 5 + TypeScript)
+
+1. **Navigate to backend and install dependencies**:
+   ```bash
+   cd backend
+   npm install
+   ```
+
+2. **Configure environment variables**:
+   ```bash
+   cp .env.example .env
+   ```
+   Ensure `.env` contains the required keys:
+   ```env
+   PORT=5000
+   DATABASE_URL=postgresql://postgres:postgres@localhost:5432/cities_of_future
+   OPENWA_SERVER_URL=http://localhost:2785/api
+   FASTAPI_ML_SERVICE_URL=http://127.0.0.1:8005
+   JWT_SECRET=your_jwt_secret_here
+   ```
+
+3. **Start the backend server**:
+   ```bash
+   # Development mode (TypeScript auto-compilation)
+   npm run dev
+
+   # Production build & run:
+   npm run build
+   npm start
+   ```
+   The backend API will be available at `http://localhost:5000`. You can confirm health via `http://localhost:5000/api/health`.
+
+---
+
+#### 5. Setup & Run FastAPI ML Detection Service (Python + FastAPI)
+
+The ML service handles real-time computer vision inference (YOLOv8 speed tracking, helmet classification, seatbelt detection, ANPR, and accident analysis).
+
+1. **Navigate to models directory**:
    ```bash
    cd models
    ```
 
-2. Create and activate a Python virtual environment:
+2. **Create and activate a Python virtual environment**:
    ```bash
    # Windows
    python -m venv venv
@@ -238,48 +358,56 @@ cd cities_of_future
    source venv/bin/activate
    ```
 
-3. Install required Python packages:
+3. **Install dependencies**:
    ```bash
    pip install -r requirements.txt
    ```
 
-4. Verify model weights and configuration:
+4. **Verify model weights & test inference**:
    ```bash
    python scripts/test_inference.py
    ```
 
-5. Launch the FastAPI server:
+5. **Start the FastAPI server**:
    ```bash
+   # Using the entrypoint script (defaults to port 8005)
    python main.py
-   # Or using uvicorn:
-   uvicorn src.api.app:app --host 0.0.0.0 --port 8000 --reload
+
+   # Or explicitly with uvicorn:
+   uvicorn src.api.app:app --host 0.0.0.0 --port 8005 --reload
    ```
-   FastAPI interactive documentation will be accessible at `http://localhost:8000/docs`.
+   FastAPI ML service interactive Swagger docs will be accessible at `http://localhost:8005/docs`.
 
 ---
 
-### 4. Setup & Run Frontend Application
+#### 6. Setup & Run Frontend Application (Next.js 16 + React 19)
 
-1. Open a new terminal and navigate to the `frontend` directory:
+1. **Navigate to frontend directory**:
    ```bash
    cd frontend
    npm install
    ```
 
-2. Create `.env` based on `.env.example`:
+2. **Configure environment variables**:
    ```bash
    cp .env.example .env
    ```
-   Ensure the API target points to your running backend:
+   Ensure the API URL points to the backend:
    ```env
    NEXT_PUBLIC_API_URL=http://localhost:5000/api
    ```
 
-3. Start the Next.js development server:
+3. **Start the Next.js development server**:
    ```bash
    npm run dev
    ```
    Open `http://localhost:3000` in your browser to access the portal.
+
+4. **Production build (optional)**:
+   ```bash
+   npm run build
+   npm start
+   ```
 
 ---
 
@@ -300,7 +428,7 @@ cd cities_of_future
 | `POST` | `/fines/:id/pay` | Settle an issued challan online. |
 | `POST` | `/chat/message` | Submit query to the traffic copilot assistant. |
 
-### ML Inference Endpoints (`http://localhost:8000`)
+### ML Inference Endpoints (`http://localhost:8005`)
 
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
@@ -328,12 +456,12 @@ The following environment variables configure the platform across services:
 | **Backend** | `R2_ACCESS_KEY_ID` | Cloudflare R2 access key. |
 | **Backend** | `R2_SECRET_ACCESS_KEY` | Cloudflare R2 secret key. |
 | **Backend** | `R2_BUCKET` | Destination bucket name for media and challan PDFs. |
-| **Backend** | `OPENWA_SERVER_URL` | OpenWA automation HTTP gateway URL for WhatsApp dispatch. |
-| **Backend** | `FASTAPI_ML_SERVICE_URL` | URL of the running FastAPI ML detection layer. |
+| **Backend** | `OPENWA_SERVER_URL` | OpenWA automation HTTP gateway URL for WhatsApp dispatch (default: `http://localhost:2785/api` on the openwa port). |
+| **Backend** | `FASTAPI_ML_SERVICE_URL` | URL of the running FastAPI ML detection layer (default: `http://127.0.0.1:8005`). |
 | **Backend** | `GOOGLE_API_KEY` | Gemini API key for Google Nano Banana violation audits. |
 | **Backend** | `OPENAI_API_KEY` | API key for the AI traffic assistant chatbot. |
-| **Frontend** | `NEXT_PUBLIC_API_URL` | Base URL of the backend REST API. |
-| **Models** | `PORT` | HTTP port for FastAPI (default: `8000`). |
+| **Frontend** | `NEXT_PUBLIC_API_URL` | Base URL of the backend REST API (default: `http://localhost:5000/api`). |
+| **Models** | `PORT` | HTTP port for FastAPI (default: `8005`). |
 | **Models** | `SPEED_LIMIT_KMH` | Default speed limit threshold in km/h (default: `60.0`). |
 | **Models** | `DEFAULT_CONFIDENCE` | Default inference threshold for neural detectors. |
 | **Models** | `FORCE_CPU` | Set to `true` to disable CUDA acceleration. |

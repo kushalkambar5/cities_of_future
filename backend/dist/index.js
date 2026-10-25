@@ -2,6 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const app_js_1 = require("./app.js");
 const env_js_1 = require("./config/env.js");
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('[Process Safety] Unhandled Rejection at:', promise, 'reason:', reason);
+});
+process.on('uncaughtException', (err) => {
+    console.error('[Process Safety] Uncaught Exception:', err);
+});
 const PORT = env_js_1.config.port;
 app_js_1.app.listen(PORT, () => {
     console.log(`🚀 Navanagar Traffic Backend running on port ${PORT}`);

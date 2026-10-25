@@ -95,6 +95,12 @@ export function DashboardLayout({
             icon: FileText,
             active: pathname === "/admin/violations" || pathname === "/violations",
           },
+          {
+            label: "Dangerous Vehicles",
+            href: "/admin/dangerous-vehicles",
+            icon: AlertTriangle,
+            active: pathname === "/admin/dangerous-vehicles",
+          },
         ]
       : []),
     ...(expectedRole === "CITIZEN"

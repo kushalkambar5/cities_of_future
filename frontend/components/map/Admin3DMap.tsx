@@ -40,13 +40,13 @@ const DEFAULT_CENTER = {
 const MODEL_CONFIGS = {
   camera: {
     modelPath: "/camera_pole.glb",
-    targetHeight: 6.0, // 6 meters tall
-    axis: "Y" as const, // Native vertical axis in file is Y
+    targetHeight: 20.0, // Scaled for visible 3D rendering
+    axis: "Y" as const,
   },
   "traffic-light": {
     modelPath: "/stylized_traffic_light.glb",
-    targetHeight: 5.5, // 5.5 meters tall
-    axis: "Z" as const, // Native vertical axis in file is Z
+    targetHeight: 18.0, // Scaled for visible 3D rendering
+    axis: "Z" as const,
   },
 };
 
@@ -67,6 +67,7 @@ export default function Admin3DMap({
   const assetModelLayerRef = useRef<any>(null);
   const selectionMarkerRef = useRef<any>(null);
   const activePopupRef = useRef<any>(null);
+  const assetMarkersRef = useRef<Map<string, any>>(new Map());
 
   const [mapLoaded, setMapLoaded] = useState(false);
   const [mapError, setMapError] = useState<string | null>(null);
@@ -153,40 +154,40 @@ export default function Admin3DMap({
       if (!currentMap) return;
 
       const popupDiv = document.createElement("div");
-      popupDiv.className = "text-xs space-y-1.5 select-none";
+      popupDiv.className = "text-xs space-y-2 select-none text-[#171717] min-w-[200px]";
 
       const isCamera = asset.type === "camera";
       const cam = isCamera ? (asset.raw as Camera) : null;
       const typeBadgeColor = isCamera 
-        ? "bg-purple-500/20 text-purple-300 border-purple-500/40" 
-        : "bg-amber-500/20 text-amber-300 border-amber-500/40";
+        ? "bg-purple-100 text-purple-800 border-purple-200" 
+        : "bg-amber-100 text-amber-800 border-amber-200";
       const typeLabel = isCamera ? "CCTV CAMERA" : "TRAFFIC LIGHT";
 
       popupDiv.innerHTML = `
-        <div class="flex items-center justify-between gap-2 border-b border-white/10 pb-1.5">
-          <span class="px-2 py-0.5 rounded text-[10px] font-bold tracking-wider border ${typeBadgeColor}">
+        <div class="flex items-center justify-between gap-3 border-b border-[#E5E5E5] pb-2 pr-6">
+          <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider border ${typeBadgeColor}">
             ${typeLabel}
           </span>
-          <span class="font-mono text-[11px] font-semibold text-slate-400">
+          <span class="font-mono text-[11px] font-bold text-[#6F7070]">
             ${asset.id}
           </span>
         </div>
-        <div class="pt-1">
-          <h4 class="font-bold text-sm text-white">${asset.name}</h4>
+        <div class="pt-1.5 space-y-1">
+          <h4 class="font-bold text-sm text-[#171717] leading-snug">${asset.name}</h4>
           ${isCamera && cam?.trafficLightId ? `
-            <p class="text-[11px] text-slate-300 mt-1">
-              🚦 Linked TL: <span class="font-semibold text-amber-300">${cam.trafficLightName || cam.trafficLightId}</span>
+            <p class="text-[11px] text-[#6F7070]">
+              🚦 Linked TL: <span class="font-semibold text-[#171717]">${cam.trafficLightName || cam.trafficLightId}</span>
             </p>
           ` : ''}
           ${isCamera && cam ? `
-            <p class="text-[11px] text-slate-300">
-              ⚡ Speed Limit: <span class="font-semibold text-emerald-300">${cam.speedLimit} km/h</span>
+            <p class="text-[11px] text-[#6F7070]">
+              ⚡ Speed Limit: <span class="font-semibold text-emerald-700">${cam.speedLimit} km/h</span>
             </p>
-            <p class="text-[11px] text-slate-300">
-              ● Status: <span class="font-semibold text-emerald-400">${cam.status}</span>
+            <p class="text-[11px] text-[#6F7070]">
+              ● Status: <span class="font-semibold text-emerald-700">${cam.status}</span>
             </p>
           ` : ''}
-          <div class="mt-2 pt-1.5 border-t border-white/10 flex items-center justify-between text-[10px] text-slate-400 font-mono">
+          <div class="mt-2.5 pt-2 border-t border-[#E5E5E5] flex items-center justify-between text-[10px] text-[#999999] font-mono gap-4">
             <span>Lat: ${asset.latitude.toFixed(6)}</span>
             <span>Lng: ${asset.longitude.toFixed(6)}</span>
           </div>
@@ -203,6 +204,84 @@ export default function Admin3DMap({
         .addTo(currentMap);
     }, 600);
   }, []);
+
+  // Synchronize HTML interactive markers for each asset
+  useEffect(() => {
+    const map = mapRef.current;
+    const maplibregl = maplibreRef.current;
+    if (!map || !maplibregl || !mapLoaded) return;
+
+    const currentMarkers = assetMarkersRef.current;
+    const incomingIds = new Set(unifiedAssets.map((a) => a.id));
+
+    // Remove obsolete markers
+    for (const [id, marker] of currentMarkers.entries()) {
+      if (!incomingIds.has(id)) {
+        marker.remove();
+        currentMarkers.delete(id);
+      }
+    }
+
+    // Add or update markers
+    unifiedAssets.forEach((asset) => {
+      if (currentMarkers.has(asset.id)) {
+        currentMarkers.get(asset.id).setLngLat([asset.longitude, asset.latitude]);
+      } else {
+        const isCamera = asset.type === "camera";
+        const el = document.createElement("div");
+        el.className = `asset-map-marker group cursor-pointer select-none transition-transform hover:scale-110`;
+        
+        el.innerHTML = `
+          <div class="flex flex-col items-center">
+            <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-md shadow-lg border ${
+              isCamera 
+                ? "border-purple-300 text-purple-950 shadow-purple-500/10" 
+                : "border-amber-300 text-amber-950 shadow-amber-500/10"
+            }">
+              <span class="w-2.5 h-2.5 rounded-full ${isCamera ? "bg-purple-500" : "bg-amber-500"} animate-pulse"></span>
+              <span class="font-bold text-xs tracking-tight">${isCamera ? "📷" : "🚦"} ${asset.name || asset.id}</span>
+            </div>
+            <div class="w-2.5 h-2.5 bg-white rotate-45 -mt-1.5 border-r border-b ${
+              isCamera ? "border-purple-300" : "border-amber-300"
+            }"></div>
+            <div class="w-2 h-2 rounded-full ${isCamera ? "bg-purple-600" : "bg-amber-600"} mt-0.5 shadow-md ring-2 ring-white"></div>
+          </div>
+        `;
+
+        el.addEventListener("click", (e) => {
+          e.stopPropagation();
+          flyToAsset(asset);
+        });
+
+        const marker = new maplibregl.Marker({ element: el, anchor: "bottom", offset: [0, -4] })
+          .setLngLat([asset.longitude, asset.latitude])
+          .addTo(map);
+
+        currentMarkers.set(asset.id, marker);
+      }
+    });
+  }, [unifiedAssets, mapLoaded, flyToAsset]);
+
+  // Fit bounds to all assets
+  const fitAllAssets = useCallback(() => {
+    const map = mapRef.current;
+    const maplibregl = maplibreRef.current;
+    if (!map || !maplibregl || unifiedAssets.length === 0) return;
+
+    if (unifiedAssets.length === 1) {
+      flyToAsset(unifiedAssets[0]);
+      return;
+    }
+
+    const bounds = new maplibregl.LngLatBounds();
+    unifiedAssets.forEach((a) => bounds.extend([a.longitude, a.latitude]));
+
+    map.fitBounds(bounds, {
+      padding: { top: 70, bottom: 90, left: 70, right: 70 },
+      maxZoom: 17,
+      duration: 1200,
+    });
+  }, [unifiedAssets, flyToAsset]);
 
   // Whenever focusedAsset prop changes, fly to it
   useEffect(() => {
@@ -265,6 +344,10 @@ export default function Admin3DMap({
           attributionControl: false,
         });
         mapRef.current = mapInstance;
+        if (typeof window !== "undefined") {
+          (window as any).__debugMap = mapInstance;
+          (window as any).__debugLayer = assetModelLayer;
+        }
 
         // Controls
         mapInstance.addControl(
@@ -292,6 +375,27 @@ export default function Admin3DMap({
 
           // Force full-bleed resize so no black borders appear
           mapInstance.resize();
+
+          // Auto-fit to existing assets if present so the view is never empty
+          if (unifiedAssets.length > 0) {
+            window.setTimeout(() => {
+              if (unifiedAssets.length === 1) {
+                mapInstance.flyTo({
+                  center: [unifiedAssets[0].longitude, unifiedAssets[0].latitude],
+                  zoom: 17,
+                  pitch: 60,
+                });
+              } else {
+                const bounds = new maplibregl.LngLatBounds();
+                unifiedAssets.forEach((a) => bounds.extend([a.longitude, a.latitude]));
+                mapInstance.fitBounds(bounds, {
+                  padding: { top: 80, bottom: 90, left: 70, right: 70 },
+                  maxZoom: 17,
+                  duration: 800,
+                });
+              }
+            }, 300);
+          }
 
           // Enable 3D buildings layer if available
           if (mapInstance.getLayer("building-3d")) {
@@ -335,6 +439,10 @@ export default function Admin3DMap({
       if (resizeObserver) resizeObserver.disconnect();
       if (activePopupRef.current) activePopupRef.current.remove();
       if (selectionMarkerRef.current) selectionMarkerRef.current.remove();
+      for (const marker of assetMarkersRef.current.values()) {
+        marker.remove();
+      }
+      assetMarkersRef.current.clear();
       assetModelLayerRef.current = null;
       maplibreRef.current = null;
       mapRef.current = null;
@@ -366,7 +474,7 @@ export default function Admin3DMap({
   return (
     <div 
       ref={outerContainerRef}
-      className="relative w-full h-full min-h-[550px] flex-1 rounded-3xl overflow-hidden border border-[#E5E5E5] bg-[#07101d] shadow-soft"
+      className="relative w-full h-full min-h-[550px] flex-1 rounded-3xl overflow-hidden border border-[#E5E5E5] bg-[#F7F7F6] shadow-soft"
     >
       {/* Map Canvas Container - Positioned Absolutely to fill 100% of parent */}
       <div 
@@ -421,12 +529,23 @@ export default function Admin3DMap({
 
       {/* Floating HUD: Top Right Quick Map Controls */}
       <div className="absolute top-4 right-4 z-20 flex items-center gap-2">
+        {unifiedAssets.length > 0 && (
+          <button
+            onClick={fitAllAssets}
+            className="px-3.5 py-2 rounded-full text-xs font-semibold bg-white/95 text-[#171717] hover:bg-white border border-[#E5E5E5] backdrop-blur-md shadow-xs transition-all flex items-center gap-1.5 hover:shadow-sm"
+            title="Fit all assets in view"
+          >
+            <Crosshair className="w-3.5 h-3.5 text-[#54A8BD]" />
+            <span>Fit All ({unifiedAssets.length})</span>
+          </button>
+        )}
+
         <button
           onClick={toggleBuildings}
-          className={`px-3 py-1.5 rounded-full text-xs font-semibold backdrop-blur-md border transition-all flex items-center gap-1.5 shadow-lg ${
+          className={`px-3.5 py-2 rounded-full text-xs font-semibold backdrop-blur-md border transition-all flex items-center gap-1.5 shadow-xs ${
             show3dBuildings
-              ? "bg-[#0f172a]/90 text-sky-300 border-sky-400/40"
-              : "bg-[#0f172a]/60 text-slate-400 border-white/10"
+              ? "bg-[#171717] text-white border-[#171717]"
+              : "bg-white/95 text-[#6F7070] border-[#E5E5E5] hover:bg-white hover:text-[#171717]"
           }`}
           title="Toggle 3D Buildings"
         >
@@ -436,40 +555,36 @@ export default function Admin3DMap({
 
         <button
           onClick={resetView}
-          className="px-3 py-1.5 rounded-full text-xs font-semibold bg-[#0f172a]/90 text-slate-200 hover:text-white border border-white/10 backdrop-blur-md shadow-lg transition-all flex items-center gap-1.5 hover:bg-[#1e293b]"
+          className="px-3.5 py-2 rounded-full text-xs font-semibold bg-white/95 text-[#171717] hover:bg-white border border-[#E5E5E5] backdrop-blur-md shadow-xs transition-all flex items-center gap-1.5 hover:shadow-sm"
           title="Reset Camera Angle"
         >
-          <Compass className="w-3.5 h-3.5 text-amber-400" />
+          <Compass className="w-3.5 h-3.5 text-amber-500" />
           <span>Reset Camera</span>
         </button>
       </div>
 
       {/* Floating HUD: Bottom Left 3D Asset Legend */}
-      <div className="absolute bottom-4 left-4 z-20 bg-[#0f172a]/90 backdrop-blur-md px-3.5 py-2.5 rounded-2xl border border-white/10 text-white shadow-xl flex items-center gap-4 text-xs select-none">
-        <div className="flex items-center gap-2">
-          <span className="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-[0_0_8px_#fbbf24]" />
-          <span className="font-medium text-slate-300">
-            🚦 Traffic Light ({trafficLights.length})
-          </span>
+      <div className="absolute bottom-4 left-4 z-20 bg-white/95 backdrop-blur-md px-4 py-2 rounded-full border border-[#E5E5E5] text-[#171717] shadow-xs flex items-center gap-3.5 text-xs select-none">
+        <div className="flex items-center gap-1.5 font-medium">
+          <span className="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-2xs" />
+          <span>Traffic Light ({trafficLights.length})</span>
         </div>
-        <div className="h-3 w-[1px] bg-white/20" />
-        <div className="flex items-center gap-2">
-          <span className="w-2.5 h-2.5 rounded-full bg-purple-400 shadow-[0_0_8px_#c084fc]" />
-          <span className="font-medium text-slate-300">
-            📷 CCTV Camera ({cameras.length})
-          </span>
+        <div className="h-3 w-[1px] bg-[#E5E5E5]" />
+        <div className="flex items-center gap-1.5 font-medium">
+          <span className="w-2.5 h-2.5 rounded-full bg-purple-500 shadow-2xs" />
+          <span>CCTV Camera ({cameras.length})</span>
         </div>
       </div>
 
       {/* Error Overlay if map fails */}
       {mapError && (
-        <div className="absolute inset-0 z-40 bg-black/80 flex items-center justify-center p-6 text-center text-white">
-          <div className="max-w-md bg-[#0f172a] p-6 rounded-2xl border border-rose-500/40 shadow-2xl">
-            <p className="text-rose-400 font-bold mb-2">Map Layer Error</p>
-            <p className="text-xs text-slate-300 mb-4">{mapError}</p>
+        <div className="absolute inset-0 z-40 bg-white/80 backdrop-blur-xs flex items-center justify-center p-6 text-center text-[#171717]">
+          <div className="max-w-md bg-white p-6 rounded-3xl border border-[#E5E5E5] shadow-lg">
+            <p className="text-rose-600 font-bold mb-2">Map Layer Error</p>
+            <p className="text-xs text-[#6F7070] mb-4">{mapError}</p>
             <button
               onClick={() => window.location.reload()}
-              className="px-4 py-2 rounded-full bg-rose-600 text-white text-xs font-semibold hover:bg-rose-700"
+              className="px-4 py-2 rounded-full bg-[#171717] text-white text-xs font-semibold hover:bg-black"
             >
               Refresh Page
             </button>
@@ -532,7 +647,6 @@ function createAssetModelLayer({
       if (THREE.SRGBColorSpace) {
         this.renderer.outputColorSpace = THREE.SRGBColorSpace;
       }
-      this.renderer.setPixelRatio(window.devicePixelRatio);
       this.renderer.setClearColor(0x000000, 0);
 
       // Load queued objects
@@ -541,16 +655,17 @@ function createAssetModelLayer({
       }
     },
 
-    render(_gl: any, renderArgs: any) {
+    render(gl: any, renderArgs: any) {
+      (this as any).__renderCount = ((this as any).__renderCount || 0) + 1;
+      (this as any).__lastRenderArgs = renderArgs;
       if (!this.renderer || !this.scene || !this.camera) return;
 
       try {
-        // Critical: in MapLibre GL v5/v6, modelViewProjectionMatrix maps world Mercator (0..1) directly to clip space (-1..1).
-        // DO NOT use defaultProjectionData.mainMatrix which is multiplied by EXTENT (8192).
         const matrix = 
-          renderArgs?.modelViewProjectionMatrix || 
+          renderArgs?.defaultProjectionData?.mainMatrix ||
+          renderArgs?.defaultProjectionData?.fallbackMatrix ||
           (Array.isArray(renderArgs) || renderArgs instanceof Float64Array ? renderArgs : null) || 
-          renderArgs?.defaultProjectionData?.fallbackMatrix;
+          renderArgs?.modelViewProjectionMatrix;
 
         if (matrix) {
           this.camera.projectionMatrix = new THREE.Matrix4().fromArray(matrix);
@@ -559,6 +674,16 @@ function createAssetModelLayer({
 
         this.renderer.resetState();
         this.renderer.render(this.scene, this.camera);
+
+        // Crucial fix: Three.js enables scissor test and clips WebGL drawing to a sub-rectangle on scaled displays (devicePixelRatio > 1).
+        // Restore MapLibre's viewport and disable scissor test so no black straps appear on top/right.
+        if (gl) {
+          gl.disable(gl.SCISSOR_TEST);
+          const canvas = this.map?.getCanvas();
+          if (canvas) {
+            gl.viewport(0, 0, canvas.width, canvas.height);
+          }
+        }
       } catch (error) {
         console.error("3D rendering cycle stopped:", error);
       }
@@ -661,8 +786,13 @@ function positionModelPrecisely(
   maplibregl: any,
   THREE: any
 ) {
-  // 1. Ensure all materials are brightly lit, double-sided, and not dark silhouettes
+  // 1. Ensure all materials are brightly lit, double-sided, and hide extraneous background geometry
   model.traverse((node: any) => {
+    // Hide extraneous background ground tiles if present in camera model
+    if (node.name && node.name.includes("Plane007")) {
+      node.visible = false;
+      return;
+    }
     if (node.isMesh) {
       node.castShadow = true;
       node.receiveShadow = true;
@@ -671,8 +801,8 @@ function positionModelPrecisely(
         materials.forEach((mat: any) => {
           if (mat) {
             mat.side = THREE.DoubleSide;
-            if (mat.roughness !== undefined) mat.roughness = Math.min(mat.roughness, 0.45);
-            if (mat.metalness !== undefined) mat.metalness = Math.min(mat.metalness, 0.15);
+            if (mat.roughness !== undefined) mat.roughness = Math.min(mat.roughness, 0.4);
+            if (mat.metalness !== undefined) mat.metalness = Math.min(mat.metalness, 0.1);
             mat.needsUpdate = true;
           }
         });
@@ -681,11 +811,11 @@ function positionModelPrecisely(
   });
 
   // 2. Align height axis with MapLibre's Z axis (Altitude = UP in Mercator)
-  // For camera pole: native height is Y, so rotate 90 deg on X
-  // For stylized traffic light: native height is Z, so no X-rotation is needed
   if (config.axis === "Y") {
+    // For Y-up models (like camera_pole.glb): rotate 90 deg around X so Y becomes Z (up)
     model.rotation.set(Math.PI / 2, 0, 0);
   } else {
+    // For Z-up models (like stylized_traffic_light.glb): already Z-up, no X rotation
     model.rotation.set(0, 0, 0);
   }
   model.updateMatrixWorld(true);
@@ -720,4 +850,5 @@ function positionModelPrecisely(
     mercator.y + centerOffsetY,
     mercator.z + bottomOffsetZ
   );
+  model.updateMatrixWorld(true);
 }

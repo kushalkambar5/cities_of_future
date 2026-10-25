@@ -75,6 +75,69 @@ def save_hardcoded_entry(filename: str, output_dict: dict) -> None:
 router = APIRouter(prefix="/pipeline", tags=["Integrated Multi-Model Pipeline"])
 
 
+@router.get(
+    "/dangerous-vehicles",
+    summary="Get all detected vehicles and danger scores from FastAPI neural pipeline outputs",
+)
+async def get_dangerous_vehicles(
+    threshold: float = 0.0,
+    video: Optional[str] = None,
+    limit: Optional[int] = None,
+):
+    """Aggregate all vehicles evaluated by the FastAPI multi-model pipeline,
+    including individual driving danger scores, violations, speeds, and safety gear status.
+    """
+    data = load_hardcoded_data()
+    all_vehicles = []
+
+    for vid_name, result in data.items():
+        if video and video.lower() not in vid_name.lower():
+            continue
+        v_list = result.get("vehicles", [])
+        for v in v_list:
+            score = float(v.get("danger_score", 0.0))
+            veh_item = dict(v)
+            veh_item["source_video"] = vid_name
+            veh_item["danger_score"] = score
+            all_vehicles.append(veh_item)
+
+    # Sort descending by danger score
+    all_vehicles.sort(key=lambda x: (x.get("danger_score", 0.0), len(x.get("violations", []))), reverse=True)
+
+    # Filter by threshold
+    filtered = [v for v in all_vehicles if v.get("danger_score", 0.0) >= threshold]
+
+    # Calculate statistics
+    scores = [v.get("danger_score", 0.0) for v in all_vehicles]
+    critical_count = sum(1 for s in scores if s >= 80.0)
+    high_count = sum(1 for s in scores if 60.0 <= s < 80.0)
+    medium_count = sum(1 for s in scores if 30.0 <= s < 60.0)
+    low_count = sum(1 for s in scores if 1.0 <= s < 30.0)
+    safe_count = sum(1 for s in scores if s == 0.0)
+
+    top_5 = all_vehicles[:5]
+
+    return {
+        "success": True,
+        "total_vehicles_analyzed": len(all_vehicles),
+        "filtered_count": len(filtered),
+        "threshold": threshold,
+        "summary": {
+            "critical_risk": critical_count,
+            "high_risk": high_count,
+            "medium_risk": medium_count,
+            "low_risk": low_count,
+            "safe": safe_count,
+            "avg_danger_score": round(sum(scores) / max(len(scores), 1), 2),
+            "max_danger_score": max(scores) if scores else 0.0,
+        },
+        "top_5": top_5,
+        "vehicles": filtered[:limit] if limit else filtered,
+        "available_videos": list(data.keys()),
+    }
+
+
+
 @router.post(
     "/process",
     response_model=PipelineProcessResult,

@@ -7,7 +7,7 @@ import { getStoredUser } from "@/lib/api";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ShieldCheck, User, ArrowRight, Layers, MapPin } from "lucide-react";
+import { ShieldCheck, User, ArrowRight, Layers, MapPin, AlertTriangle } from "lucide-react";
 
 export default function AdminDashboardPage() {
   const user = getStoredUser();
@@ -55,6 +55,36 @@ export default function AdminDashboardPage() {
               <Link href="/create" className="inline-flex items-center gap-2 text-xs font-bold">
                 <Layers className="w-4 h-4 text-sky-400" />
                 <span>Open 3D Map</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </Button>
+          </div>
+        </Card>
+
+        {/* Dangerous Vehicles Card */}
+        <Card className="p-6 sm:p-8 bg-gradient-to-br from-white via-white to-red-50/30 border-2 border-red-500/20 shadow-md">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-red-100 flex items-center justify-center text-red-700 shrink-0 shadow-xs">
+                <AlertTriangle className="w-6 h-6 text-red-600" strokeWidth={2.2} />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <CardTitle className="text-lg">Dangerous Vehicles & Risk Index</CardTitle>
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-100 text-red-700 uppercase tracking-wider">
+                    Route: /admin/dangerous-vehicles
+                  </span>
+                </div>
+                <CardDescription className="mt-1 text-xs">
+                  Inspect raw FastAPI neural pipeline output scores for all detected vehicles and citizen drivers. Features dynamic threshold sliders, Top 5 most hazardous offenders, violation filters, and raw JSON export.
+                </CardDescription>
+              </div>
+            </div>
+
+            <Button asChild className="bg-red-600 hover:bg-red-700 text-white shrink-0 self-start sm:self-auto rounded-full px-5 py-2.5 shadow-xs">
+              <Link href="/admin/dangerous-vehicles" className="inline-flex items-center gap-2 text-xs font-bold">
+                <AlertTriangle className="w-4 h-4" />
+                <span>View Risk Index</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </Button>

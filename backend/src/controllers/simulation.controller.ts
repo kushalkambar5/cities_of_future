@@ -501,3 +501,260 @@ export async function processSimulation(req: Request, res: Response): Promise<vo
     res.status(500).json({ error: error.message || 'Pipeline simulation failed' });
   }
 }
+
+/**
+ * Retrieve dangerous vehicles and associated person (driver/owner) risk scores
+ * sourced from raw FastAPI pipeline output + database person records.
+ */
+export async function getDangerousVehicles(req: Request, res: Response): Promise<void> {
+  try {
+    const {
+      threshold,
+      search,
+      video,
+      violation,
+      risk,
+      sort,
+      limit,
+    } = req.query;
+
+    const minThreshold = threshold !== undefined && threshold !== '' ? parseFloat(String(threshold)) : 0.0;
+
+    // 1. Fetch raw data from FastAPI or fallback to hardcoded_outputs.json
+    let fastApiData: any = null;
+    try {
+      const mlResp = await fetch(`${config.fastapi.url}/pipeline/dangerous-vehicles?threshold=0`);
+      if (mlResp.ok) {
+        fastApiData = await mlResp.json();
+      }
+    } catch (err: any) {
+      console.warn('[DangerousVehicles] FastAPI fetch error, falling back to local file:', err.message);
+    }
+
+    // Load raw JSON file for fallback and verbatim raw inspection
+    let rawJsonFileContent: any = {};
+    const hardcodedPath = path.resolve(__dirname, '../../../models/src/api/routes/hardcoded_outputs.json');
+    if (fs.existsSync(hardcodedPath)) {
+      try {
+        rawJsonFileContent = JSON.parse(fs.readFileSync(hardcodedPath, 'utf8'));
+      } catch (e) {
+        console.error('Error reading hardcoded_outputs.json:', e);
+      }
+    }
+
+    if (!fastApiData && Object.keys(rawJsonFileContent).length > 0) {
+      const allVehs: any[] = [];
+      for (const [vid, resObj] of Object.entries<any>(rawJsonFileContent)) {
+        for (const veh of (resObj.vehicles || [])) {
+          allVehs.push({
+            ...veh,
+            source_video: vid,
+            danger_score: Number(veh.danger_score || 0),
+          });
+        }
+      }
+      allVehs.sort((a, b) => b.danger_score - a.danger_score);
+      fastApiData = {
+        success: true,
+        total_vehicles_analyzed: allVehs.length,
+        filtered_count: allVehs.length,
+        threshold: 0,
+        summary: {
+          critical_risk: allVehs.filter((v) => v.danger_score >= 80).length,
+          high_risk: allVehs.filter((v) => v.danger_score >= 60 && v.danger_score < 80).length,
+          medium_risk: allVehs.filter((v) => v.danger_score >= 30 && v.danger_score < 60).length,
+          low_risk: allVehs.filter((v) => v.danger_score >= 1 && v.danger_score < 30).length,
+          safe: allVehs.filter((v) => v.danger_score === 0).length,
+          avg_danger_score:
+            Math.round(
+              (allVehs.reduce((acc, v) => acc + v.danger_score, 0) / Math.max(allVehs.length, 1)) * 10
+            ) / 10,
+          max_danger_score: allVehs.length ? Math.max(...allVehs.map((v) => v.danger_score)) : 0,
+        },
+        top_5: allVehs.slice(0, 5),
+        vehicles: allVehs,
+        available_videos: Object.keys(rawJsonFileContent),
+      };
+    }
+
+    const rawVehicles: any[] = fastApiData?.vehicles || [];
+
+    // 2. Fetch all registered vehicles and users from database
+    const dbVehicles = await db
+      .select({
+        plateNumber: vehicles.plateNumber,
+        vehicleType: vehicles.vehicleType,
+        ownerId: vehicles.ownerId,
+        userName: users.name,
+        userPhone: users.phone,
+        userEmail: users.email,
+        userStatus: users.status,
+      })
+      .from(vehicles)
+      .leftJoin(users, eq(vehicles.ownerId, users.id));
+
+    const vehicleMap = new Map<string, any>();
+    for (const v of dbVehicles) {
+      if (v.plateNumber) {
+        vehicleMap.set(v.plateNumber.trim().toUpperCase(), v);
+      }
+    }
+
+    // 3. Enrich each vehicle with its registered citizen/person
+    const enrichedList = rawVehicles.map((v, idx) => {
+      const plate = (v.number_plate || '').trim().toUpperCase();
+      const dbInfo = vehicleMap.get(plate);
+      const score = Number(v.danger_score || 0);
+
+      let riskLevel: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW' | 'SAFE' = 'SAFE';
+      if (score >= 80) riskLevel = 'CRITICAL';
+      else if (score >= 60) riskLevel = 'HIGH';
+      else if (score >= 30) riskLevel = 'MEDIUM';
+      else if (score > 0) riskLevel = 'LOW';
+
+      return {
+        id: idx + 1,
+        track_id: v.track_id,
+        number_plate: v.number_plate,
+        plate_confidence: v.plate_confidence ?? 0.0,
+        generated_plate: Boolean(v.generated_plate),
+        speed_kmh: v.speed_kmh ?? 0.0,
+        helmet_status: v.helmet_status || 'unknown',
+        seatbelt_status: v.seatbelt_status || 'unknown',
+        danger_score: score,
+        risk_level: riskLevel,
+        accident_status: v.accident_status || 'Non Accident',
+        accident_confidence: v.accident_confidence ?? 0.0,
+        violations: v.violations || [],
+        source_video: v.source_video || 'Camera Feed',
+        first_seen_timestamp: v.first_seen_timestamp || '00:00.00',
+        last_seen_timestamp: v.last_seen_timestamp || '00:00.00',
+        first_seen_ms: v.first_seen_ms || 0,
+        last_seen_ms: v.last_seen_ms || 0,
+        person: {
+          id: dbInfo?.ownerId || null,
+          name: dbInfo?.userName || 'Unregistered Citizen',
+          phone: dbInfo?.userPhone || 'N/A',
+          email: dbInfo?.userEmail || 'N/A',
+          status: dbInfo?.userStatus || 'ACTIVE',
+        },
+        vehicle_type: dbInfo?.vehicleType || (v.helmet_status !== 'unknown' ? 'MOTORCYCLE' : 'CAR'),
+        raw_fastapi: v,
+      };
+    });
+
+    // 4. Calculate top 5 most dangerous persons / vehicles
+    const sortedByDanger = [...enrichedList].sort((a, b) => {
+      if (b.danger_score !== a.danger_score) {
+        return b.danger_score - a.danger_score;
+      }
+      return b.violations.length - a.violations.length;
+    });
+
+    const top5 = sortedByDanger.slice(0, 5).map((item, rank) => ({
+      ...item,
+      rank: rank + 1,
+    }));
+
+    // 5. Apply filters
+    let filtered = [...sortedByDanger];
+
+    // Threshold filter
+    if (minThreshold > 0) {
+      filtered = filtered.filter((v) => v.danger_score >= minThreshold);
+    }
+
+    // Search query
+    if (search && typeof search === 'string' && search.trim()) {
+      const q = search.trim().toLowerCase();
+      filtered = filtered.filter(
+        (v) =>
+          v.number_plate.toLowerCase().includes(q) ||
+          v.person.name.toLowerCase().includes(q) ||
+          v.person.phone.toLowerCase().includes(q) ||
+          String(v.track_id).includes(q)
+      );
+    }
+
+    // Video filter
+    if (video && typeof video === 'string' && video.trim() && video !== 'ALL') {
+      const vq = video.trim().toLowerCase();
+      filtered = filtered.filter((v) => v.source_video.toLowerCase().includes(vq));
+    }
+
+    // Violation filter
+    if (violation && typeof violation === 'string' && violation.trim() && violation !== 'ALL') {
+      const viq = violation.trim().toLowerCase();
+      filtered = filtered.filter((v) =>
+        v.violations.some((vl: string) => vl.toLowerCase().includes(viq))
+      );
+    }
+
+    // Risk level filter
+    if (risk && typeof risk === 'string' && risk.trim() && risk !== 'ALL') {
+      filtered = filtered.filter((v) => v.risk_level === risk.toUpperCase());
+    }
+
+    // Sort
+    if (sort === 'score_asc') {
+      filtered.sort((a, b) => a.danger_score - b.danger_score);
+    } else if (sort === 'speed_desc') {
+      filtered.sort((a, b) => b.speed_kmh - a.speed_kmh);
+    } else if (sort === 'violations_desc') {
+      filtered.sort((a, b) => b.violations.length - a.violations.length);
+    } else if (sort === 'name_asc') {
+      filtered.sort((a, b) => a.person.name.localeCompare(b.person.name));
+    } else {
+      // Default: score_desc
+      filtered.sort((a, b) => b.danger_score - a.danger_score);
+    }
+
+    // Optional limit
+    const pageLimit = limit ? parseInt(String(limit), 10) : undefined;
+    const finalVehicles = pageLimit ? filtered.slice(0, pageLimit) : filtered;
+
+    // Overall metrics calculation
+    const allScores = enrichedList.map((v) => v.danger_score);
+    const criticalCount = allScores.filter((s) => s >= 80).length;
+    const highRiskCount = allScores.filter((s) => s >= 60 && s < 80).length;
+    const mediumRiskCount = allScores.filter((s) => s >= 30 && s < 60).length;
+    const lowRiskCount = allScores.filter((s) => s > 0 && s < 30).length;
+    const safeCount = allScores.filter((s) => s === 0).length;
+
+    // Violation frequency breakdown
+    const violationCounts: Record<string, number> = {};
+    for (const v of enrichedList) {
+      for (const vl of v.violations) {
+        violationCounts[vl] = (violationCounts[vl] || 0) + 1;
+      }
+    }
+
+    res.status(200).json({
+      success: true,
+      totalAnalyzed: enrichedList.length,
+      filteredCount: filtered.length,
+      threshold: minThreshold,
+      summary: {
+        criticalCount,
+        highRiskCount,
+        mediumRiskCount,
+        lowRiskCount,
+        safeCount,
+        averageDangerScore:
+          Math.round(
+            (allScores.reduce((acc, s) => acc + s, 0) / Math.max(allScores.length, 1)) * 10
+          ) / 10,
+        maxDangerScore: allScores.length ? Math.max(...allScores) : 0,
+        violationBreakdown: violationCounts,
+      },
+      top5,
+      vehicles: finalVehicles,
+      availableVideos: fastApiData?.available_videos || Object.keys(rawJsonFileContent),
+      rawFastApiOutputs: rawJsonFileContent,
+    });
+  } catch (error: any) {
+    console.error('Error in getDangerousVehicles:', error);
+    res.status(500).json({ error: error.message || 'Failed to fetch dangerous vehicles' });
+  }
+}
+

@@ -6,4 +6,5 @@ const router = (0, express_1.Router)();
 router.get('/cameras', simulation_controller_js_1.getSimulationCameras);
 router.post('/assign-video', simulation_controller_js_1.assignCameraVideo);
 router.post('/process', simulation_controller_js_1.processSimulation);
+router.get('/dangerous-vehicles', simulation_controller_js_1.getDangerousVehicles);
 exports.default = router;

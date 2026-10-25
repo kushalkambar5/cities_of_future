@@ -553,3 +553,84 @@ export async function sendChatMessageApi(payload: {
   });
 }
 
+// ==========================================
+// 8. DANGEROUS VEHICLES & RISK ANALYSIS API
+// ==========================================
+
+export interface DangerousVehicleItem {
+  id: number;
+  track_id: number;
+  number_plate: string;
+  plate_confidence: number;
+  generated_plate: boolean;
+  speed_kmh: number;
+  helmet_status: string;
+  seatbelt_status: string;
+  danger_score: number;
+  risk_level: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW' | 'SAFE';
+  accident_status: string;
+  accident_confidence: number;
+  violations: string[];
+  source_video: string;
+  first_seen_timestamp: string;
+  last_seen_timestamp: string;
+  first_seen_ms: number;
+  last_seen_ms: number;
+  person: {
+    id: number | null;
+    name: string;
+    phone: string;
+    email: string;
+    status: string;
+  };
+  vehicle_type: string;
+  raw_fastapi: any;
+  rank?: number;
+}
+
+export interface DangerousVehiclesResponse {
+  success: boolean;
+  totalAnalyzed: number;
+  filteredCount: number;
+  threshold: number;
+  summary: {
+    criticalCount: number;
+    highRiskCount: number;
+    mediumRiskCount: number;
+    lowRiskCount: number;
+    safeCount: number;
+    averageDangerScore: number;
+    maxDangerScore: number;
+    violationBreakdown: Record<string, number>;
+  };
+  top5: DangerousVehicleItem[];
+  vehicles: DangerousVehicleItem[];
+  availableVideos: string[];
+  rawFastApiOutputs?: Record<string, any>;
+}
+
+export async function getDangerousVehiclesApi(params?: {
+  threshold?: number;
+  search?: string;
+  video?: string;
+  violation?: string;
+  risk?: string;
+  sort?: string;
+  limit?: number;
+}): Promise<DangerousVehiclesResponse> {
+  const query = new URLSearchParams();
+  if (params?.threshold !== undefined) query.set('threshold', String(params.threshold));
+  if (params?.search) query.set('search', params.search);
+  if (params?.video) query.set('video', params.video);
+  if (params?.violation) query.set('violation', params.violation);
+  if (params?.risk) query.set('risk', params.risk);
+  if (params?.sort) query.set('sort', params.sort);
+  if (params?.limit) query.set('limit', String(params.limit));
+
+  const qs = query.toString() ? `?${query.toString()}` : '';
+  return apiRequest<DangerousVehiclesResponse>(`/simulation/dangerous-vehicles${qs}`, {
+    method: 'GET',
+  });
+}
+
+

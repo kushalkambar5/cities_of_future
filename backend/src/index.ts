@@ -1,6 +1,14 @@
 import { app } from './app.js';
 import { config } from './config/env.js';
 
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('[Process Safety] Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
+process.on('uncaughtException', (err) => {
+  console.error('[Process Safety] Uncaught Exception:', err);
+});
+
 const PORT = config.port;
 
 app.listen(PORT, () => {
